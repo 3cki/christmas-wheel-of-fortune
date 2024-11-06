@@ -1,0 +1,28 @@
+.multipliersContainer {
+  display: flex;
+  justify-content: center;
+  height: 10rem;
+  margin-top: 1rem;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+}
+
+.multipliers {
+  height: 100%;
+  aspect-ratio: 120/55;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+  font-family: Rye;
+  color: white;
+}
+
+.betItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid oklch(var(--bc));
+  border-radius: 5px;
+}
