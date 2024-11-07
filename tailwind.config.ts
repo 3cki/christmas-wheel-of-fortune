@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
+import { on } from "events";
 
 const config: Config = {
   content: [
@@ -9,6 +10,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fill: {
+        '0.1': 'var(--ten-cent)',
+        '0.2': 'var(--twenty-cent)',
+        '0.5': 'var(--fifty-cent)',
+        '1': 'var(--one-euro)',
+        '2': 'var(--two-euro)',
+      },
       backgroundColor: {
         one: 'var(--one)',
         two: 'var(--two)',

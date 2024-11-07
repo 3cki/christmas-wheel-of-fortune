@@ -10,10 +10,10 @@
 
 .multipliers {
   height: 100%;
-  aspect-ratio: 120/55;
+  aspect-ratio: 240/55;
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 2fr 2fr 2fr;
   text-align: center;
   font-family: Rye;
   color: white;
@@ -21,8 +21,39 @@
 
 .betItem {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  justify-items: center;
+  font-size: 1.5rem;
   border: 2px solid oklch(var(--bc));
   border-radius: 5px;
+  transition: ease transform 0.1s;
+  user-select: none;
+  height: 4.5rem;
+}
+
+.betOption {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  z-index: 1;
+  background: white;
+  height: 5rem;
+  width: 5rem;
+  user-select: none;
+  color: white;
+  border-radius: 50%;
+}
+
+.pokerchipSvg {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.betItem:active {
+  transform: scale(0.97);
 }

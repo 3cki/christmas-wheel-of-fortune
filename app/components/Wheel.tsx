@@ -3,74 +3,89 @@
 import { useState } from 'react';
 import styles from './Wheel.module.css'
 
-type Slice = { color: string, label: string, value: number, bonus: boolean }
+type Bets = {
+  one: number;
+  two: number;
+  five: number;
+  ten: number;
+  pch: number;
+  cf: number;
+  ch: number;
+  ct: number;
+}
+
+interface Slice {
+  color: string;
+  label: string;
+  value: number;
+  bonus: boolean;
+  target: keyof Bets;
+}
 
 interface WheelProps {
   spinning: boolean
   setSpinning: (arg0: boolean) => void
+  setSelectedSlice: (arg0: Slice) => void
 }
 
 const Wheel = (props: WheelProps) => {
-
-  const slices: Slice[] = [
-    { color: 'var(--one)', label: '1', value: 2, bonus: false },
-    { color: 'var(--five)', label: '5', value: 3, bonus: false },
-    { color: 'var(--two)', label: '2', value: 5, bonus: false },
-    { color: 'var(--ten)', label: '10', value: 10, bonus: false },
-    { color: 'var(--one)', label: '1', value: 2, bonus: false },
-    { color: 'var(--pch)', label: 'Pachinko', value: 3, bonus: true },
-    { color: 'var(--one)', label: '1', value: 5, bonus: false },
-    { color: 'var(--two)', label: '2', value: 10, bonus: false },
-    { color: 'var(--five)', label: '5', value: 2, bonus: false },
-    { color: 'var(--one)', label: '1', value: 3, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--cf)', label: 'Coin Flip', value: 5, bonus: true },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--ten)', label: '10', value: 2, bonus: false },
-    { color: 'var(--one)', label: '1', value: 2, bonus: false },
-    { color: 'var(--five)', label: '5', value: 3, bonus: false },
-    { color: 'var(--one)', label: '1', value: 5, bonus: false },
-    { color: 'var(--ch)', label: 'Cash Hunt', value: 10, bonus: true },
-    { color: 'var(--one)', label: '1', value: 2, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--five)', label: '5', value: 5, bonus: false },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--two)', label: '2', value: 2, bonus: false },
-    { color: 'var(--cf)', label: 'Coin Flip', value: 3, bonus: true },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--one)', label: '1', value: 5, bonus: false },
-    { color: 'var(--ten)', label: '10', value: 10, bonus: false },
-    { color: 'var(--two)', label: '2', value: 2, bonus: false },
-    { color: 'var(--one)', label: '1', value: 5, bonus: false },
-    { color: 'var(--ct)', label: 'Crazy Time', value: 5, bonus: true },
-    { color: 'var(--one)', label: '1', value: 5, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--five)', label: '5', value: 5, bonus: false },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--pch)', label: 'Pachinko', value: 3, bonus: true },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--five)', label: '5', value: 5, bonus: false },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--cf)', label: 'Coin Flip', value: 10, bonus: true },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--ten)', label: '10', value: 10, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--ch)', label: 'Cash Hunt', value: 3, bonus: true },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--two)', label: '2', value: 3, bonus: false },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--five)', label: '5', value: 5, bonus: false },
-    { color: 'var(--one)', label: '1', value: 10, bonus: false },
-    { color: 'var(--cf)', label: 'Coin Flip', value: 10, bonus: true }
-  ]
-
+const slices: Slice[] = [
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--ten)', label: '10', value: 10, bonus: false, target: 'ten' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--pch)', label: 'Pachinko', value: 0, bonus: true, target: 'pch' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--cf)', label: 'Coin Flip', value: 0, bonus: true, target: 'cf' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--ten)', label: '10', value: 10, bonus: false, target: 'ten' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--ch)', label: 'Cash Hunt', value: 0, bonus: true, target: 'ch' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--cf)', label: 'Coin Flip', value: 0, bonus: true, target: 'cf' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--ten)', label: '10', value: 10, bonus: false, target: 'ten' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--ct)', label: 'Crazy Time', value: 0, bonus: true, target: 'ct' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--pch)', label: 'Pachinko', value: 0, bonus: true, target: 'pch' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--cf)', label: 'Coin Flip', value: 0, bonus: true, target: 'cf' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--ten)', label: '10', value: 10, bonus: false, target: 'ten' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--ch)', label: 'Cash Hunt', value: 0, bonus: true, target: 'ch' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
+  { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
+  { color: 'var(--cf)', label: 'Coin Flip', value: 0, bonus: true, target: 'cf' }
+];
   const [angle, setAngle] = useState<number>(0)
-  const [selectedSlice, setSelectedSlice] = useState<number | null>(null);
 
   const handleSpin = () => {
     if (props.spinning) {
@@ -78,7 +93,7 @@ const Wheel = (props: WheelProps) => {
     }
     setTimeout(() => {
       props.setSpinning(false)
-    }, 8000)
+    }, 2000)
     props.setSpinning(true)
     const randomAngle = Math.round(Math.random() * 360 * 9) + 360;
     const newAngle = angle + randomAngle;
@@ -90,14 +105,13 @@ const Wheel = (props: WheelProps) => {
     const deg = Math.abs(Math.round((newAngle + offset) % 360));
 
     const selectedIndex = (sliceAmount - Math.floor(deg / angleBySlice)) % sliceAmount;
-    console.log(selectedIndex)
-    setSelectedSlice(selectedIndex);
+    props.setSelectedSlice(slices[selectedIndex]);
   }
 
   return (
     <div>
       <div className={`${styles.container}`}>
-        <div className={`${styles.arrow}`}/>
+        <div className={`${styles.arrow}`} />
         <div className={`${styles.middlebutton}`}
           onClick={handleSpin}
         >Spin</div>
@@ -120,7 +134,8 @@ const Wheel = (props: WheelProps) => {
               </div>
               <div
                 className={styles.sector}
-                style={{ transform: `rotate(${index * (360 / slices.length)}deg)`,
+                style={{
+                  transform: `rotate(${index * (360 / slices.length)}deg)`,
                   //ghetto offset
                   rotate: "-0.5deg"
                 }}
