@@ -2,25 +2,7 @@
 
 import { useState } from 'react';
 import styles from './Wheel.module.css'
-
-type Bets = {
-  one: number;
-  two: number;
-  five: number;
-  ten: number;
-  pch: number;
-  cf: number;
-  ch: number;
-  ct: number;
-}
-
-interface Slice {
-  color: string;
-  label: string;
-  value: number;
-  bonus: boolean;
-  target: keyof Bets;
-}
+import { Slice } from '../wheeloffortune/page';
 
 interface WheelProps {
   spinning: boolean
@@ -85,6 +67,17 @@ const slices: Slice[] = [
   { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
   { color: 'var(--cf)', label: 'Coin Flip', value: 0, bonus: true, target: 'cf' }
 ];
+
+//const slices: Slice[] = [
+//  { color: 'var(--pch)', label: 'Pachinko', value: 0, bonus: true, target: 'pch' },
+//  { color: 'var(--cf)', label: 'Coin Flip', value: 0, bonus: true, target: 'cf' },
+//  { color: 'var(--ch)', label: 'Cash Hunt', value: 0, bonus: true, target: 'ch' },
+//  { color: 'var(--pch)', label: 'Pachinko', value: 0, bonus: true, target: 'pch' },
+//  { color: 'var(--ch)', label: 'Cash Hunt', value: 0, bonus: true, target: 'ch' },
+//  { color: 'var(--cf)', label: 'Coin Flip', value: 0, bonus: true, target: 'cf' },
+//];
+
+
   const [angle, setAngle] = useState<number>(0)
 
   const handleSpin = () => {

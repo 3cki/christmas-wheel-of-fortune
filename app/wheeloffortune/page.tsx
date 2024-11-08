@@ -5,22 +5,27 @@ import styles from './page.module.css'
 import currency from 'currency.js';
 import PokerChipSVG from '@/public/pokerchip.svg'
 import WinningsModal from '../components/WinningsModal';
+import CoinFlip from '../components/CoinFlip';
+import { useBalance } from '../contexts/balanceContext';
+
+export type CurrentGame = 'normal' | 'Coin Flip' | 'Pachinko' | 'Cash Hunt' | 'Crazy Time'
+
+export type Bets = {
+  [key: string]: number
+}
+export type BetChoices = 0.1 | 0.2 | 0.5 | 1 | 2
+export interface Slice {
+  color: string;
+  label: string;
+  value: number;
+  bonus: boolean;
+  target: keyof Bets;
+}
 
 const Page = () => {
 
-  const [balance, setBalance] = useState<number>(100)
-  type Bets = {
-    [key: string]: number
-  }
-  type BetChoices = 0.1 | 0.2 | 0.5 | 1 | 2
-  interface Slice {
-    color: string;
-    label: string;
-    value: number;
-    bonus: boolean;
-    target: keyof Bets;
-  }
 
+  const balance = useBalance()
   //format placed bets
   const startingBets: Bets = { one: 0, two: 0, five: 0, ten: 0, ct: 0, ch: 0, pch: 0, cf: 0 }
   const betOptions: BetChoices[] = [0.1, 0.2, 0.5, 1, 2]
@@ -29,24 +34,31 @@ const Page = () => {
   const [spinning, setSpinning] = useState<boolean>(false)
   const [selectedBet, setSelectedBet] = useState<BetChoices>(0.1)
   const [selectedSlice, setSelectedSlice] = useState<Slice | null>(null);
-  const [winnings, setWinnings] = useState<number | null>(null);
+  const [winnings, setWinnings] = useState<number>(0);
+  const [currentBonusGame, setCurrentBonusGame] = useState<CurrentGame | string>('default')
+  const [currentBetOnBonus, setCurrentBetOnBonus] = useState<number>(0)
 
   useEffect(() => {
     if (!spinning && selectedSlice) {
-      const currentBetOnResult = totalBets[selectedSlice?.target]
-      const calculatedWinnings = currency(selectedSlice?.value).multiply(currentBetOnResult).add(currentBetOnResult).value
-      console.log(selectedSlice)
-      console.log('currentBetOnResult', currentBetOnResult)
-      console.log('calculatedWinnings', calculatedWinnings)
-      if (calculatedWinnings > 0) {
+      const currentBetOnChoice = totalBets[selectedSlice?.target]
+      const calculatedWinnings = currency(selectedSlice?.value).multiply(currentBetOnChoice).value
+
+      //if bonusgame, show bonusgame and hide normal wheel
+      if (selectedSlice.bonus && currentBetOnChoice) {
+        setCurrentBetOnBonus(currentBetOnChoice)
+        setCurrentBonusGame(selectedSlice.label)
+      }
+
+      //show winnings modal if won
+      if (calculatedWinnings > 0 && !selectedSlice.bonus) {
         setWinnings(calculatedWinnings)
+        balance?.updateBalance(currency(balance.current).add(calculatedWinnings).add(currentBetOnChoice).value)
         const winningModal = document.getElementById("winningsModal") as HTMLDialogElement | null
         if (winningModal) {
           winningModal.showModal()
         }
-        setBalance(prevBalance => currency(prevBalance).add(calculatedWinnings).value)
-        console.log(`Congratulations you got ${calculatedWinnings}€`)
       }
+
       //reset Bets
       const resetBets = startingBets
       setTotalBets(resetBets)
@@ -55,12 +67,12 @@ const Page = () => {
   }, [spinning])
 
   const handleBet = (betAmount: number, multiplier: keyof Bets) => {
-    if (!spinning) {
-      const newBalance = currency(balance).subtract(betAmount).value
+    if (!spinning && currentBonusGame == 'default') {
+      const newBalance = currency(balance?.current as number).subtract(betAmount).value
       if (newBalance < 0) {
         return
       }
-      setBalance(newBalance)
+      balance?.updateBalance(newBalance)
       setTotalBets(prevBets => ({
         ...prevBets, [multiplier]: currency(prevBets[multiplier]).add(betAmount).value
       }))
@@ -98,14 +110,29 @@ const Page = () => {
     2: 'fill-2',
   };
 
+  const renderGameComponent = () => {
+    switch (currentBonusGame) {
+      case 'Coin Flip':
+        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+      case 'Pachinko':
+        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+      case 'Cash Hunt':
+        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+      case 'Crazy Time':
+        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+      default:
+        return <Wheel
+          spinning={spinning} setSpinning={setSpinning}
+          setSelectedSlice={setSelectedSlice}
+        />
+    }
+  }
+
   return (
     <div>
       <WinningsModal winnings={winnings} />
-      <Wheel
-        spinning={spinning} setSpinning={setSpinning}
-        setSelectedSlice={setSelectedSlice}
-      />
-      <div className='flex justify-center mt-6 font-mono'>Balance: {`${balance}`}</div>
+      {renderGameComponent()}
+      <div className='flex justify-center mt-6 font-mono'>Balance: {`${balance?.current}`}</div>
       <div className={`${styles.multipliersContainer}`}>
         <div className={`${styles.multipliers}`}>
           {Object.entries(sectors).map((sector, index) => (
@@ -116,7 +143,7 @@ const Page = () => {
             >
               <p>{sector[1]}</p>
               {totalBets[sector[0]] > 0 && (
-                <div className='text-lg'>{`${totalBets[sector[0]]}`}</div>
+                <div className='text-lg'>{`${totalBets[sector[0]]}€`}</div>
               )}
             </div>
           ))}

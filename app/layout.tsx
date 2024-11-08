@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Rye } from 'next/font/google'
+import { BalanceProvider } from "./contexts/balanceContext";
 
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <BalanceProvider>
+          {children}
+        </BalanceProvider>
       </body>
     </html>
   );
