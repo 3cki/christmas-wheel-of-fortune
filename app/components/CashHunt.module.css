@@ -7,20 +7,24 @@
 .container {
   width: 50em;
   height: 50em;
-  position: relative;
   perspective: 150em;
   font-size: 15;
   margin-top: 6rem;
-  background: gray;
+  background: snow;
+  padding: 1rem;
+  border: 6px solid darkgreen;
+  border-radius: 5%;
   transform: translateZ(-0.4em);
 }
 
 .multipliers {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr ;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
   align-items: center;
+  gap: 2rem;
+  padding: 1rem;
   width: 100%;
   height: 100%;
   font-size: 2rem;
@@ -28,10 +32,48 @@
 
 .multiplierItem {
   text-align: center;
-  align-content: center;
-  width: 4rem;
-  height: 4rem;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   user-select: none;
-  background: lightgreen;
+  color: white;
+  background: darkgreen;
   border-radius: 50%;
+  transition: scale 0.1s ease;
+  transition: transform 0.9s ease;
+}
+
+.multiplierFront {
+  transform: rotateY(0deg);
+  width: 100%;
+  align-content: center;
+  height: 100%;
+  top: 0;
+  position: absolute;
+  z-index: 1;
+  backface-visibility: hidden;
+}
+
+.multiplierBack {
+  transform: rotateY(180deg);
+  align-content: center;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  position: absolute;
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+
+.multiplierItem:active {
+  scale: 0.95;
+  transform: rotate3d(0, 1, 0, 180deg);
+}
+
+
+.back {
+  background: var(--back);
 }

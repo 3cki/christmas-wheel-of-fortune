@@ -1,5 +1,3 @@
-import Wheel from './components/Wheel';
-
 const App = () => {
 
   return (

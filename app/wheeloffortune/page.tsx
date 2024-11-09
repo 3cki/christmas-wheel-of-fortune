@@ -112,15 +112,15 @@ const Page = () => {
   };
 
   const renderGameComponent = () => {
-    switch ('Cash Hunt') {
+    switch (currentBonusGame) {
       case 'Coin Flip':
-        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Pachinko':
-        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Cash Hunt':
         return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Crazy Time':
-        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       default:
         return <Wheel
           spinning={spinning} setSpinning={setSpinning}
