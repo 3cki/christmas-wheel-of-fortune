@@ -1,0 +1,37 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 50em;
+  height: 50em;
+  position: relative;
+  perspective: 150em;
+  font-size: 15;
+  margin-top: 6rem;
+  background: gray;
+  transform: translateZ(-0.4em);
+}
+
+.multipliers {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr ;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
+}
+
+.multiplierItem {
+  text-align: center;
+  align-content: center;
+  width: 4rem;
+  height: 4rem;
+  user-select: none;
+  background: lightgreen;
+  border-radius: 50%;
+}

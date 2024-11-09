@@ -7,6 +7,7 @@ import PokerChipSVG from '@/public/pokerchip.svg'
 import WinningsModal from '../components/WinningsModal';
 import CoinFlip from '../components/CoinFlip';
 import { useBalance } from '../contexts/balanceContext';
+import CashHunt from '../components/CashHunt';
 
 export type CurrentGame = 'normal' | 'Coin Flip' | 'Pachinko' | 'Cash Hunt' | 'Crazy Time'
 
@@ -111,13 +112,13 @@ const Page = () => {
   };
 
   const renderGameComponent = () => {
-    switch (currentBonusGame) {
+    switch ('Cash Hunt') {
       case 'Coin Flip':
         return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Pachinko':
         return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Cash Hunt':
-        return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Crazy Time':
         return <CoinFlip setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       default:

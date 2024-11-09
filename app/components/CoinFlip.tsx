@@ -2,16 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styles from './CoinFlip.module.scss';
 import { useBalance } from '../contexts/balanceContext';
 import currency from 'currency.js';
+import { BonusGameProps } from '../types/BonusgameTypes';
 
-
-interface CoinProps {
-  setCurrentBonusGame: (args0: string) => void;
-  setWinnings: (args0: number) => void;
-  currentBetOnBonus: number
-  winnings: number
-}
-
-const Coin = (props: CoinProps) => {
+const Coin = (props: BonusGameProps) => {
   const balance = useBalance()
   const [spin, setSpin] = useState<number>(0)
   const [flipping, setFlipping] = useState<boolean>(false)
@@ -112,7 +105,7 @@ const Coin = (props: CoinProps) => {
   )
 };
 
-const CoinFlip = (props: CoinProps) => (
+const CoinFlip = (props: BonusGameProps) => (
   <div className={styles.wrapper}>
     <div className={styles.container}>
       <Coin
