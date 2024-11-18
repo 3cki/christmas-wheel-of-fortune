@@ -1,0 +1,17 @@
+.container {
+  width: 50em;
+  height: 50em;
+  justify-self: center;
+  margin-top: 6rem;
+  background: #cd3aa4;
+  position: relative;
+}
+
+.multipliers {
+  display: flex;
+  justify-content: center;
+  gap: 23.5px;
+  margin-top: -60px;
+  user-select: none;
+}
+

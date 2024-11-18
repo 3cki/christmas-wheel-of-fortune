@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { BonusGameProps } from '../types/BonusgameTypes'
 import styles from './CashHunt.module.css'
 import { useBalance } from '../contexts/balanceContext'
-import { transform } from 'next/dist/build/swc/generated-native';
 import currency from 'currency.js';
 
 interface multiplierItem {

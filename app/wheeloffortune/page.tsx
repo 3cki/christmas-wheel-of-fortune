@@ -8,6 +8,7 @@ import WinningsModal from '../components/WinningsModal';
 import CoinFlip from '../components/CoinFlip';
 import { useBalance } from '../contexts/balanceContext';
 import CashHunt from '../components/CashHunt';
+import Pachinko from '../components/Pachinko';
 
 export type CurrentGame = 'normal' | 'Coin Flip' | 'Pachinko' | 'Cash Hunt' | 'Crazy Time'
 
@@ -24,8 +25,6 @@ export interface Slice {
 }
 
 const Page = () => {
-
-
   const balance = useBalance()
   //format placed bets
   const startingBets: Bets = { one: 0, two: 0, five: 0, ten: 0, ct: 0, ch: 0, pch: 0, cf: 0 }
@@ -112,15 +111,15 @@ const Page = () => {
   };
 
   const renderGameComponent = () => {
-    switch (currentBonusGame) {
+    switch ('Pachinko') {
       case 'Coin Flip':
-        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <Pachinko setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Pachinko':
-        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <Pachinko setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Cash Hunt':
-        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <Pachinko setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Crazy Time':
-        return <CashHunt setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
+        return <Pachinko setCurrentBonusGame={setCurrentBonusGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       default:
         return <Wheel
           spinning={spinning} setSpinning={setSpinning}
