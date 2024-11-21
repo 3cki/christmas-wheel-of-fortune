@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
-import Matter, { IPair, IEventCollision, Composite, Engine, Runner, Render, World, Bodies, Events } from 'matter-js';
+import Matter, { Pair, IEventCollision, Composite, Engine, Runner, Render, World, Bodies, Events } from 'matter-js';
 import styles from './Pachinko.module.css';
 import { BonusGameProps } from '../types/BonusgameTypes';
 import currency from 'currency.js';
@@ -72,7 +72,7 @@ const Pachinko = (props: BonusGameProps) => {
 
 
     const renderScene = () => {
-      if (renderRef.current) return;
+      if (renderRef.current || !scene.current) return;
       const render = Render.create({
         element: scene.current,
         engine: engine.current,
@@ -139,7 +139,7 @@ const Pachinko = (props: BonusGameProps) => {
       const borderWidth = 5;
       const bucketWidth = totalWidth / bucketCount - borderWidth / 2;
 
-      const buckets: Matter.Body[] = [];
+      const buckets: Matter.Body[][] = [];
       for (let i = 0; i < bucketCount; i++) {
         const xPosition = i * bucketWidth + bucketWidth / 2 + 20;
         const bucket = [
@@ -147,7 +147,6 @@ const Pachinko = (props: BonusGameProps) => {
           Bodies.rectangle(xPosition + bucketWidth / 2, 760, borderWidth, 50, { isStatic: true }),
           Bodies.rectangle(xPosition, 780, bucketWidth, borderWidth, { isStatic: true })
         ];
-        bucket[2].label = `bucket${i}`
         buckets.push(bucket);
       }
 
@@ -161,9 +160,9 @@ const Pachinko = (props: BonusGameProps) => {
       Render.run(render);
 
       // Add collision detection to buckets
-      Events.on(engine.current, 'collisionActive', (event: IEventCollision) => {
+      Events.on(engine.current, 'collisionActive', (event: IEventCollision<Engine>) => {
         //pairs are formed whenever there is a collision
-        const pairs: IPair[] = event.pairs;
+        const pairs: Pair[] = event.pairs;
         pairs.forEach((pair) => {
           const { bodyA, bodyB } = pair;
           if (bodyA.label === 'ball' || bodyB.label === 'ball') {
@@ -179,7 +178,7 @@ const Pachinko = (props: BonusGameProps) => {
 
       return () => {
         Render.stop(render);
-        World.clear(engine.current.world);
+        World.clear(engine.current.world, false);
         Engine.clear(engine.current);
         render.canvas.remove();
         render.textures = {};

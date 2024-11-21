@@ -15,10 +15,12 @@
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "sass": "^1.80.6"
+    "sass": "^1.81.0",
+    "sass-loader": "^16.0.3"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/matter-js": "^0.19.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

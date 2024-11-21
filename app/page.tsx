@@ -1,9 +1,7 @@
-import WheelOfFortune from "./wheeloffortune/page"
-
 const App = () => {
   return (
     <div>
-      <WheelOfFortune/>
+      There is nothing here
     </div>
   );
 }
