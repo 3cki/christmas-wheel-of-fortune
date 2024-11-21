@@ -41,7 +41,7 @@ const slices: Slice[] = [
   { color: 'var(--ten)', label: '10', value: 10, bonus: false, target: 'ten' },
   { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
   { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
-  { color: 'var(--ct)', label: 'Crazy Time', value: 0, bonus: true, target: 'ct' },
+  { color: 'var(--jp)', label: 'Jackpot', value: 0, bonus: true, target: 'jp' },
   { color: 'var(--one)', label: '1', value: 1, bonus: false, target: 'one' },
   { color: 'var(--two)', label: '2', value: 2, bonus: false, target: 'two' },
   { color: 'var(--five)', label: '5', value: 5, bonus: false, target: 'five' },
@@ -120,7 +120,7 @@ const slices: Slice[] = [
                   transform: `rotate(${index * (360 / slices.length)}deg)`,
                   clipPath: "polygon(50% 50%, -7.7% 100%, 4% 100%)",
                   borderRadius: "50%",
-                  //ghetto offset
+                  //line up text and slices
                   rotate: "133.7deg"
                 }}
               >

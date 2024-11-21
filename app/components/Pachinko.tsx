@@ -12,9 +12,6 @@ const Pachinko = (props: BonusGameProps) => {
   const renderRef = useRef<Render | null>(null)
   const [currentBucket, setCurrentBucket] = useState<number | null>(null)
   const balance = useBalance()
-
-  //localwinnings to trigger useEffect based on winnings state
-  const [localWinnings, setLocalwinnings] = useState<number>(0)
   const [multiplierChoices, setMultiplierChoices] = useState<number[]>([])
 
   useEffect(() => {
@@ -62,7 +59,7 @@ const Pachinko = (props: BonusGameProps) => {
         }
       }, 1000)
       setTimeout(() => {
-        props.setCurrentBonusGame('default')
+        props.setCurrentGame('default')
       }, 5000)
     }
   }, [currentBucket])
@@ -116,12 +113,12 @@ const Pachinko = (props: BonusGameProps) => {
       }
 
       //const balls = []
-      //for (let i = 0; i < 1; i++) {
-      //  const ball = Bodies.circle(getRandomInt(), 0, 8, { restitution: 0.7 });
+      //for (let i = 0; i < 100; i++) {
+      //  const ball = Bodies.circle(getRandomPosX(), 0, 13, { restitution: 0.7 });
       //  balls.push(ball)
       //}
 
-      const ball = Bodies.circle(getRandomPosX(), 0, 14, {
+      const ball = Bodies.circle(getRandomPosX(), 0, 13, {
         restitution: 0.8,
         render: {
           strokeStyle: 'black',

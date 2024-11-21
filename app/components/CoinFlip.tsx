@@ -77,7 +77,7 @@ const Coin = (props: BonusGameProps) => {
         setFlipping(false)
       }, 5000)
       setTimeout(() => {
-        props.setCurrentBonusGame('default');
+        props.setCurrentGame('default');
       }, 7000)
     }
   }
@@ -109,7 +109,7 @@ const CoinFlip = (props: BonusGameProps) => (
   <div className={styles.wrapper}>
     <div className={styles.container}>
       <Coin
-        setCurrentBonusGame={props.setCurrentBonusGame}
+        setCurrentGame={props.setCurrentGame}
         winnings={props.winnings}
         setWinnings={props.setWinnings}
         currentBetOnBonus={props.currentBetOnBonus}

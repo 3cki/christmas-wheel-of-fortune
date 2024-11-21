@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
-import { on } from "events";
 
 const config: Config = {
   content: [
@@ -25,7 +24,7 @@ const config: Config = {
         cf: 'var(--cf)',
         pch: 'var(--pch)',
         ch: 'var(--ch)',
-        ct: 'var(--ct)',
+        jp: 'var(--jp)',
       },
       fontFamily: {
         rye: ['var(--font-rye)']

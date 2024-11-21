@@ -59,7 +59,7 @@ const CashHunt = (props: BonusGameProps) => {
       }
       },5000)
       setTimeout(() => {
-        props.setCurrentBonusGame('default')
+        props.setCurrentGame('default')
       }, 7000)
     }
 
