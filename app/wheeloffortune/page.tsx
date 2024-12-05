@@ -205,7 +205,7 @@ const WheelOfFortune = () => {
         </div>
       </div>
 
-      <div className='flex gap-4 mt-6 justify-center'>
+      <div className={`${styles.betOptionContainer} flex gap-4 mt-6 justify-center` }>
         {(betOptions).map((betValue, index) => (
           <div key={index}
             className={`

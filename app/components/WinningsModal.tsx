@@ -9,7 +9,7 @@ const WinningsModal = (props: WinningsModalProps) => {
   return (
     <dialog id="winningsModal" className={`modal`}>
       <div className={`${styles.container} modal-box`}>
-        <h3 className="text-5xl font-bold">Congratulations!</h3>
+        <h3 className="text-4xl font-bold">Congratulations!</h3>
         <p id="winningsAmount">You Won {props.winnings}€</p>
       </div>
       <form method="dialog" className="modal-backdrop">
