@@ -103,6 +103,9 @@
   .container {
     font-size: 18px;
   }
+  .bonusSector {
+    left: -46.5%;
+  }
 
   .wheel {
     max-width: 35rem;

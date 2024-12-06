@@ -1,17 +1,29 @@
 .container {
-  width: 50em;
-  height: 50em;
+  width: 95%;
+  aspect-ratio: 1/1;
+  max-width: 50rem;
   justify-self: center;
-  margin-top: 6rem;
-  background: #cd3aa4;
+  margin-top: 1rem;
   position: relative;
+}
+
+.container canvas {
+  width: 100%;
+  height: auto;
 }
 
 .multipliers {
   display: flex;
-  justify-content: center;
-  gap: 23.5px;
-  margin-top: -60px;
+  justify-content: space-evenly;
+  padding-inline: 3%;
+  gap: 2%;
+  margin-top: -6.5%;
+  width: 100%;
   user-select: none;
 }
 
+@media (max-width: 800px) {
+  .multipliers {
+    font-size: 2vw;
+  }
+}

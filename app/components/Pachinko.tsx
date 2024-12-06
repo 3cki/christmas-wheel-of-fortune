@@ -65,26 +65,34 @@ const Pachinko = (props: BonusGameProps) => {
   }, [currentBucket])
 
 
+  //create scene on first render
   useEffect(() => {
     const getRandomPosX = () => {
       return Math.floor(40 + Math.random() * 710)
     }
 
-
     const renderScene = () => {
       if (renderRef.current || !scene.current) return;
+      const width = 800;
+      const height = 800;
+      const world = engine.current.world
       const render = Render.create({
         element: scene.current,
         engine: engine.current,
         options: {
-          width: 800,
-          height: 800,
+          width: width,
+          height: height,
           wireframes: false,
-          background: 'none'
+          background: "#cd3aa4"
         }
       });
+
       //prevent multiple renders by having reference to last render
       renderRef.current = render;
+      Render.run(render);
+
+      const runner = Runner.create();
+      Runner.run(runner, engine.current);
 
       const obstacles = []
       let row = 1
@@ -129,9 +137,9 @@ const Pachinko = (props: BonusGameProps) => {
       ball.label = 'ball'
 
       const walls = [
-        Bodies.rectangle(400, 800, 800, 45, { isStatic: true }),
-        Bodies.rectangle(800, 400, 45, 800, { isStatic: true }),
-        Bodies.rectangle(0, 400, 45, 800, { isStatic: true })
+        Bodies.rectangle(400, 800, width, 45, { isStatic: true }),
+        Bodies.rectangle(800, 400, 45, height, { isStatic: true }),
+        Bodies.rectangle(0, 400, 45, height, { isStatic: true })
       ]
 
       const totalWidth = 800;
@@ -151,13 +159,10 @@ const Pachinko = (props: BonusGameProps) => {
       }
 
       buckets.forEach((bucket) => {
-        Composite.add(engine.current.world, bucket);
+        Composite.add(world, bucket);
       })
-      Composite.add(engine.current.world, [ball, ...obstacles, ...walls]);
+      Composite.add(world, [ball, ...obstacles, ...walls]);
 
-      const runner = Runner.create();
-      Runner.run(runner, engine.current);
-      Render.run(render);
 
       // Add collision detection to buckets
       Events.on(engine.current, 'collisionActive', (event: IEventCollision<Engine>) => {
@@ -174,6 +179,10 @@ const Pachinko = (props: BonusGameProps) => {
             });
           }
         });
+      });    
+      Render.lookAt(render, {
+        min: { x: 0, y: 0 },
+        max: { x: 800, y: 800 }
       });
 
       return () => {
@@ -181,7 +190,6 @@ const Pachinko = (props: BonusGameProps) => {
         World.clear(engine.current.world, false);
         Engine.clear(engine.current);
         render.canvas.remove();
-        render.textures = {};
         renderRef.current = null;
       };
     };
