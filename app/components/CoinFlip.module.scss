@@ -5,12 +5,13 @@
 }
 
 .container {
-  width: 50em;
-  height: 50em;
+  width: 95vw;
+  height: 95vw;
+  max-height: 50em;
+  max-width: 50em;
   position: relative;
   perspective: 150em;
   font-size: 15;
-  margin-top: 6rem;
   transform: translateZ(-0.4em);
 }
 
@@ -72,7 +73,6 @@
 
 .side {
   width: 2em;
-  height: 8.3em;
   background: var(--side);
   position: absolute;
   left: 50%;
@@ -84,7 +84,20 @@
 
 //position the sides
 @for $i from 1 through 20 {
+  $translateZ: 24.8em;
+  $height: 8.3em;
   .coin figure:nth-of-type(#{$i}) {
-        transform: translate3d(-50%, -50%, 0) rotateY(90deg) rotateX(($i - 1) * 18deg) translateZ(24.85em);
+    transform: translate3d(-50%, -50%, 0) rotateY(90deg) rotateX(($i - 1) * 18deg) translateZ($translateZ);
+    height: $height;
+    @media (max-width: 800px) {
+      $translateZ: 46.6vw;
+      transform: translate3d(-50%, -50%, 0) rotateY(90deg) rotateX(($i - 1) * 18deg) translateZ($translateZ);
+      height: 15vw;
     }
+  }
+}
+@media (max-width: 800px) {
+  .symbol {
+    font-size: 36vw;
+  }
 }

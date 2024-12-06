@@ -162,7 +162,7 @@ const WheelOfFortune = () => {
   };
 
   const renderGameComponent = () => {
-    switch (currentGame) {
+    switch ('Coin Flip') {
       case 'Coin Flip':
         return <CoinFlip setCurrentGame={setCurrentGame} winnings={winnings} setWinnings={setWinnings} currentBetOnBonus={currentBetOnBonus} />
       case 'Pachinko':
@@ -225,3 +225,4 @@ const WheelOfFortune = () => {
 }
 
 export default WheelOfFortune
+
