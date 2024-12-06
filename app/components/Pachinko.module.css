@@ -22,6 +22,12 @@
   user-select: none;
 }
 
+@media (max-width: 1920px) {
+  .container {
+    max-width: 35rem;
+  }
+}
+
 @media (max-width: 800px) {
   .multipliers {
     font-size: 2vw;

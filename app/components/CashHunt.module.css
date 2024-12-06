@@ -5,11 +5,12 @@
 }
 
 .container {
-  width: 50em;
-  height: 50em;
-  perspective: 150em;
-  font-size: 15;
-  margin-top: 6rem;
+  width: 95vw;
+  aspect-ratio: 1/1;
+  max-width: 50rem;
+  justify-self: center;
+  font-size: 25;
+  margin-top: 1rem;
   background: snow;
   padding: 1rem;
   border: 6px solid darkgreen;
@@ -22,11 +23,9 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
   align-items: center;
-  gap: 2rem;
-  padding: 1rem;
+  gap: 3%;
   width: 100%;
   height: 100%;
-  font-size: 2rem;
 }
 
 .multiplierItem {
@@ -75,4 +74,22 @@
 
 .back {
   background: var(--back);
+}
+
+@media (max-width: 1920px) {
+  .container {
+    max-width: 35rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .container {
+    font-size: 20;
+  }
+}
+
+@media (max-width: 425px) {
+  .container {
+    font-size: 16;
+  }
 }

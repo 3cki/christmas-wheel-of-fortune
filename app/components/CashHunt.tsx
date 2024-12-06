@@ -85,28 +85,26 @@ const CashHunt = (props: BonusGameProps) => {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <div className={styles.multipliers}>
-          {multiplierChoices.map((multiplier, index) => (
-            <div key={index}
-              onClick={() => handleChoice(multiplier)}
-              className={`${styles.multiplierItem}`}
+    <div className={styles.container}>
+      <div className={styles.multipliers}>
+        {multiplierChoices.map((multiplier, index) => (
+          <div key={index}
+            onClick={() => handleChoice(multiplier)}
+            className={`${styles.multiplierItem}`}
+            style={{
+              transform: multiplier.flipped ? 'rotateY(180deg)' : `rotateY(${defaultRotation}deg)`,
+            }}
+          >
+            <div className={styles.multiplierBack}
               style={{
-                transform: multiplier.flipped ? 'rotateY(180deg)' : `rotateY(${defaultRotation}deg)`,
+                background: multiplier.flipped ? 'gray' : ''
               }}
             >
-              <div className={styles.multiplierBack}
-                style={{
-                  background: multiplier.flipped ? 'gray' : ''
-                }}
-              >
-                {multiplier.value}x
-              </div>
-              <div className={styles.multiplierFront}>?</div>
+              {multiplier.value}x
             </div>
-          ))}
-        </div>
+            <div className={styles.multiplierFront}>?</div>
+          </div>
+        ))}
       </div>
     </div>
   )
