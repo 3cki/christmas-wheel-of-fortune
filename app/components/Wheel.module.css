@@ -62,7 +62,7 @@
   border: 5px solid gold;
   position: relative;
   will-change: transform, clip-path;
-  transition: transform 2s cubic-bezier(0.2, -.17, 0, 1.03);
+  transition: transform 4s cubic-bezier(0.2, -.17, 0, 1.03);
 }
 
 .bonusSector {

@@ -86,7 +86,7 @@ const slices: Slice[] = [
     }
     setTimeout(() => {
       props.setSpinning(false)
-    }, 2000)
+    }, 4000)
     props.setSpinning(true)
     const randomAngle = Math.round(Math.random() * 360 * 9) + 360;
     const newAngle = angle + randomAngle;

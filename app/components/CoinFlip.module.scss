@@ -89,15 +89,27 @@
   .coin figure:nth-of-type(#{$i}) {
     transform: translate3d(-50%, -50%, 0) rotateY(90deg) rotateX(($i - 1) * 18deg) translateZ($translateZ);
     height: $height;
-    @media (max-width: 800px) {
+    @media (max-width: 1920px) {
+      $translateZ: 17.3rem;
+      transform: translate3d(-50%, -50%, 0) rotateY(90deg) rotateX(($i - 1) * 18deg) translateZ($translateZ);
+      height: 5.5rem;
+    }
+    @media (max-width: 597px) {
       $translateZ: 46.6vw;
       transform: translate3d(-50%, -50%, 0) rotateY(90deg) rotateX(($i - 1) * 18deg) translateZ($translateZ);
       height: 15vw;
     }
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 1920px) {
+  .container {
+    max-height: 35rem;
+    max-width: 35rem;
+  }
+}
+@media (max-width: 597px) {
   .symbol {
     font-size: 36vw;
   }
 }
+
