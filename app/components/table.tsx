@@ -8,7 +8,9 @@ export default function Table() {
   const [newParticipantName, setNewParticipantName] = useState("");
 
   return (
-    <div className="w-1/3 p-4 bg-white rounded grid grid-cols-4 gap-4">
+    <div className="w-1/2 p-4 bg-white rounded grid grid-cols-6 gap-4">
+      <div className="font-bold">Name</div>
+      <div className="font-bold">Geschenke</div>
       <div className="font-bold">Name</div>
       <div className="font-bold">Geschenke</div>
       <div className="font-bold">Name</div>
