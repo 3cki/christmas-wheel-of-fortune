@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Rye } from 'next/font/google'
-import { BalanceProvider } from "./contexts/balanceContext";
-
 
 export const metadata: Metadata = {
-  title: "Lucky Wheel",
-  description: "Spin to Win",
+  title: "Dreh am Rad",
+  description: "Crazy Christm Wheel",
 };
-
-const rye = Rye({
-  subsets:['latin'],
-  weight:["400"],
-  variable: '--font-rye'
-})
 
 export default function RootLayout({
   children,
@@ -21,15 +12,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">      
+    <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body>
-        <BalanceProvider>
-          {children}
-        </BalanceProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

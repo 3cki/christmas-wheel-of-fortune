@@ -6,7 +6,6 @@
   justify-self: center;
   margin-top: 1rem;
   font-size: 20px;
-  background: gold;
   border-radius: 50%;
   overflow: hidden;
   user-select: none;
@@ -14,7 +13,7 @@
 
 @keyframes coinSpin {
   100% {
-    transform: rotate3d(0, 0.1, 0, 360deg)
+    transform: rotate3d(0, 0.1, 0, 360deg);
   }
 }
 
@@ -62,12 +61,12 @@
   border: 5px solid gold;
   position: relative;
   will-change: transform, clip-path;
-  transition: transform 4s cubic-bezier(0.2, -.17, 0, 1.03);
+  transition: transform 4s cubic-bezier(0.2, -0.17, 0, 1.03);
 }
 
 .bonusSector {
   position: absolute;
-  font-family: 'rye';
+  font-family: "rye";
   width: 100%;
   height: 100%;
   left: -47.5%;
@@ -81,7 +80,7 @@
 .sector {
   position: absolute;
   color: white;
-  font-family: 'rye';
+  font-family: "rye";
   width: 100%;
   height: 100%;
   text-align: center;

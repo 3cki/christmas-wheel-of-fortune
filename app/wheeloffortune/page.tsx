@@ -1,8 +1,6 @@
 "use client";
 import Wheel from "@/app/components/Wheel";
-import React, { useEffect, useState } from "react";
-import currency from "currency.js";
-import { useBalance } from "../contexts/balanceContext";
+import React, { useState } from "react";
 
 export type CurrentGame =
   | "normal"
@@ -24,54 +22,11 @@ export interface Slice {
 }
 
 const WheelOfFortune = () => {
-  const balance = useBalance();
-  //format placed bets
-  const startingBets: Bets = {
-    one: 0,
-    two: 0,
-    five: 0,
-    ten: 0,
-    ct: 0,
-    ch: 0,
-    pch: 0,
-    cf: 0,
-  };
-
-  const [totalBets, setTotalBets] = useState<Bets>(startingBets);
   const [spinning, setSpinning] = useState<boolean>(false);
   const [selectedSlice, setSelectedSlice] = useState<Slice | null>(null);
 
-  useEffect(() => {
-    if (!spinning && selectedSlice) {
-      const currentBetOnChoice = totalBets[selectedSlice?.target];
-      const calculatedWinnings = currency(selectedSlice?.value).multiply(
-        currentBetOnChoice
-      ).value;
-
-      //show winnings modal if won
-      if (calculatedWinnings > 0 && !selectedSlice.bonus) {
-        balance?.updateBalance(
-          currency(balance.current)
-            .add(calculatedWinnings)
-            .add(currentBetOnChoice).value
-        );
-        const winningModal = document.getElementById(
-          "winningsModal"
-        ) as HTMLDialogElement | null;
-        if (winningModal) {
-          winningModal.showModal();
-        }
-      }
-
-      //reset Bets
-      const resetBets = startingBets;
-      setTotalBets(resetBets);
-    }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spinning]);
-
   return (
-    <div>
+    <div className="h-screen flex items-center justify-center">
       <Wheel
         spinning={spinning}
         setSpinning={setSpinning}
