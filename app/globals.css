@@ -26,6 +26,9 @@ html {
 
 body {
   font-size: 20px;
+}
+
+.screen {
   background-image: url("../public/img/background.png");
   background-repeat: no-repeat;
   background-size: cover;
