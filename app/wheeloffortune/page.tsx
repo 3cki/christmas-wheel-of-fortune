@@ -4,10 +4,10 @@ import React, { useState } from "react";
 
 export type CurrentGame =
   | "normal"
-  | "Coin Flip"
-  | "Pachinko"
-  | "Cash Hunt"
-  | "Jackpot";
+  | "Gedicht vervollständigen"
+  | "Wahr / Falsch"
+  | "Weihnachstlieder trällern"
+  | "Schätzen";
 
 export type Bets = {
   [key: string]: number;
