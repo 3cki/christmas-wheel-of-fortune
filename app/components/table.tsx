@@ -3,12 +3,13 @@ import { TrashIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { Participant, useParticipantsStore } from "@/app/state/participants";
 import { useState } from "react";
 import { div } from "framer-motion/client";
+import clsx from "clsx";
 
 export default function Table() {
   const { participants } = useParticipantsStore();
 
   return (
-    <div className="w-1/2 p-4 bg-white rounded-lg grid grid-cols-3 gap-4 border border-dotted border-red-400 border-8">
+    <div className="w-1/2 p-4 bg-white rounded-lg grid grid-cols-3 gap-2 border border-dotted border-red-400 border-8">
       <Header />
       {participants.map((participant) => (
         <ParticipantRow participant={participant} key={participant.id} />
@@ -42,7 +43,12 @@ function ParticipantRow({ participant }: { participant: Participant }) {
     useParticipantsStore();
 
   return (
-    <div className="flex items-center justify-between">
+    <div
+      className={clsx(
+        "flex items-center justify-between rounded p-2",
+        participant.gifts <= 0 && "bg-red-100"
+      )}
+    >
       <div className="flex items-center gap-2">
         <Button
           isIconOnly
@@ -59,6 +65,7 @@ function ParticipantRow({ participant }: { participant: Participant }) {
           isIconOnly
           size="sm"
           variant="flat"
+          color="danger"
           startContent={<MinusIcon className="h-4 w-4" />}
           onPress={() => decreaseGifts(participant.id)}
         />
