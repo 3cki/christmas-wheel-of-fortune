@@ -1,4 +1,5 @@
 "use client";
+import Table from "@/app/components/table";
 import Wheel from "@/app/components/Wheel";
 import React, { useState } from "react";
 
@@ -26,12 +27,13 @@ const WheelOfFortune = () => {
   const [selectedSlice, setSelectedSlice] = useState<Slice | null>(null);
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <div className="h-screen flex items-center justify-evenly">
       <Wheel
         spinning={spinning}
         setSpinning={setSpinning}
         setSelectedSlice={setSelectedSlice}
       />
+      <Table />
     </div>
   );
 };
