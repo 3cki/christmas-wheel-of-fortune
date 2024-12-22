@@ -80,19 +80,27 @@ function AddParticipantRow() {
   const [newParticipantName, setNewParticipantName] = useState("");
 
   return (
-    <div className="col-span-3 flex items-center gap-4">
+    <form
+      className="col-span-3 flex items-center gap-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        addParticipant(newParticipantName);
+        setNewParticipantName("");
+        setTimeout(() => {
+          document.getElementById("new-participant-input")?.focus();
+        }, 0);
+      }}
+    >
       <Input
+        id="new-participant-input"
         variant="bordered"
+        autoFocus
         value={newParticipantName}
         onChange={(e) => setNewParticipantName(e.target.value)}
       />
-      <Button
-        onPress={() => addParticipant(newParticipantName)}
-        color="primary"
-        variant="flat"
-      >
+      <Button color="primary" variant="flat" type="submit">
         Hinzufügen
       </Button>
-    </div>
+    </form>
   );
 }
