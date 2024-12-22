@@ -13,35 +13,7 @@ interface WheelProps {
 const Wheel = (props: WheelProps) => {
   const slices: Slice[] = [
     {
-      color: "red",
-      label: "Gedicht",
-      value: 0,
-      bonus: true,
-      target: "pch",
-    },
-    {
-      color: "orange",
-      label: "Wahr / Falsch",
-      value: 0,
-      bonus: true,
-      target: "cf",
-    },
-    {
-      color: "yellow",
-      label: "Weihnachtslieder trällern",
-      value: 0,
-      bonus: true,
-      target: "ch",
-    },
-    {
-      color: "green",
-      label: "Schätzen",
-      value: 0,
-      bonus: true,
-      target: "cf",
-    },
-    {
-      color: "blue",
+      color: "darkgreen",
       label: "Gedicht",
       value: 0,
       bonus: true,
@@ -56,13 +28,41 @@ const Wheel = (props: WheelProps) => {
     },
     {
       color: "purple",
-      label: "Weihnachtslieder trällern",
+      label: "Lieder trällern",
       value: 0,
       bonus: true,
       target: "ch",
     },
     {
-      color: "pink",
+      color: "darkblue",
+      label: "Schätzen",
+      value: 0,
+      bonus: true,
+      target: "cf",
+    },
+    {
+      color: "darkgreen",
+      label: "Gedicht",
+      value: 0,
+      bonus: true,
+      target: "pch",
+    },
+    {
+      color: "teal",
+      label: "Wahr / Falsch",
+      value: 0,
+      bonus: true,
+      target: "cf",
+    },
+    {
+      color: "purple",
+      label: "Lieder trällern",
+      value: 0,
+      bonus: true,
+      target: "ch",
+    },
+    {
+      color: "darkblue",
       label: "Schätzen",
       value: 0,
       bonus: true,
@@ -102,15 +102,16 @@ const Wheel = (props: WheelProps) => {
     <div>
       <div className={`${styles.container}`}>
         <div className={`${styles.arrow}`} />
-        <div className={`${styles.middlebutton}`} onClick={handleSpin}>
-          Spin
-        </div>
+        <div
+          className={`${styles.middlebutton} cursor-pointer`}
+          onClick={handleSpin}
+        ></div>
         <div
           className={`${styles.wheel}`}
           style={{ transform: `rotate(${angle}deg)` }}
         >
           {slices.map((slice, index) => (
-            <div key={index}>
+            <div key={index} className="text-xl font-bold tracking-wide">
               <div
                 className={styles.sector}
                 style={{
@@ -131,9 +132,7 @@ const Wheel = (props: WheelProps) => {
                   rotate: "-0.5deg",
                 }}
               >
-                <p className={slice.bonus ? styles.bonusSector : ""}>
-                  {slice.label}
-                </p>
+                <p className={styles.bonusSector}> {slice.label}</p>
               </div>
             </div>
           ))}
