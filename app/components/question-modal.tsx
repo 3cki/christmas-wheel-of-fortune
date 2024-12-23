@@ -5,7 +5,9 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  useDraggable,
 } from "@nextui-org/react";
+import { useRef } from "react";
 
 export default function QuestionModal({
   isOpen,
@@ -16,12 +18,28 @@ export default function QuestionModal({
   onOpenChange: () => void;
   questionType?: string;
 }) {
+  const targetRef = useRef(null);
+  const { moveProps } = useDraggable({
+    targetRef,
+    isDisabled: !isOpen,
+    canOverflow: true,
+  });
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      size="2xl"
+      isDismissable={false}
+      ref={targetRef}
+    >
       <ModalContent className="border border-dotted border-red-400 border-8 rounded-xl">
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1 text-2xl">
+            <ModalHeader
+              {...moveProps}
+              className="flex flex-col gap-1 text-2xl"
+            >
               {questionType || "Leer"}
             </ModalHeader>
             <ModalBody className="flex flex-col gap-8">
