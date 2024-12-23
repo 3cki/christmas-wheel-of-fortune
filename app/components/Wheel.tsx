@@ -129,7 +129,7 @@ const Wheel = (props: WheelProps) => {
                 style={{
                   transform: `rotate(${index * (360 / slices.length)}deg)`,
                   //ghetto offset
-                  rotate: "-0.5deg",
+                  rotate: "0.75deg",
                 }}
               >
                 <p className={styles.bonusSector}> {slice.label}</p>

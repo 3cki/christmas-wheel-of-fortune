@@ -1,13 +1,14 @@
 "use client";
 import Table from "@/app/components/table";
 import Wheel from "@/app/components/Wheel";
-import { Button } from "@nextui-org/react";
+import { Button, useDisclosure } from "@nextui-org/react";
 import {
   ArrowsPointingOutIcon,
   ArrowsPointingInIcon,
 } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import QuestionModal from "@/app/components/question-modal";
 
 export type CurrentGame =
   | "normal"
@@ -31,6 +32,13 @@ export interface Slice {
 const WheelOfFortune = () => {
   const [spinning, setSpinning] = useState<boolean>(false);
   const [selectedSlice, setSelectedSlice] = useState<Slice | null>(null);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  useMemo(() => {
+    if (!onOpen) return;
+    if (spinning) return;
+    onOpen();
+  }, [spinning, selectedSlice, onOpen]);
 
   const fullScreen = useFullScreenHandle();
 
@@ -38,6 +46,7 @@ const WheelOfFortune = () => {
     <FullScreen handle={fullScreen}>
       <div className="h-screen flex flex-col items-center justify-between screen">
         <div className="w-full flex items-center justify-end gap-4 p-4">
+          <Button onPress={onOpen}>Letzte Frage erneut öffnen</Button>
           <Button
             isIconOnly
             startContent={
@@ -65,6 +74,11 @@ const WheelOfFortune = () => {
           <Table />
         </div>
         <div></div>
+        <QuestionModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          questionType={selectedSlice?.label}
+        />
       </div>
     </FullScreen>
   );
