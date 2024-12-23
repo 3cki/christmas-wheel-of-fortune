@@ -86,7 +86,7 @@ export default function QuestionModal({
               className="flex flex-col gap-1 text-2xl"
             >
               {currentQuestion?.label} - Schwierigkeit{" "}
-              {currentQuestion?.difficulty}
+              {currentQuestion?.difficulty} / 10
             </ModalHeader>
             <ModalBody className="flex flex-col gap-8">
               <div className="text-xl">
