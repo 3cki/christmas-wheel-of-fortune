@@ -99,7 +99,7 @@ const Wheel = (props: WheelProps) => {
   };
 
   return (
-    <div>
+    <div className="w-2/5">
       <div className={`${styles.container}`}>
         <div className={`${styles.arrow}`} />
         <div

@@ -19,7 +19,7 @@
 
 .container .middlebutton {
   position: absolute;
-  width: 7.5vw;
+  width: 5rem;
   aspect-ratio: 1/1;
   max-width: 13.5rem;
   display: flex;

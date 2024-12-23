@@ -56,7 +56,7 @@ const WheelOfFortune = () => {
             }}
           />
         </div>
-        <div className="flex items-center justify-evenly">
+        <div className="flex items-center justify-between gap-8">
           <Wheel
             spinning={spinning}
             setSpinning={setSpinning}
