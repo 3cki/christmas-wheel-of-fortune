@@ -33,8 +33,10 @@ export default function QuestionModal({
     canOverflow: true,
   });
   const [currentQuestion, setCurrentQuestion] = useState<Question>();
+  const [showAnswer, setShowAnswer] = useState(false);
 
   useEffect(() => {
+    setShowAnswer(false);
     let selectedQuestion;
     switch (questionType) {
       case "gedicht":
@@ -97,8 +99,12 @@ export default function QuestionModal({
                   ))}
                 </div>
               </div>
+              {showAnswer && <div>{currentQuestion?.answer}</div>}
             </ModalBody>
             <ModalFooter>
+              <Button onPress={() => setShowAnswer(true)}>
+                Antwort anzeigen
+              </Button>
               <Button color="primary" onPress={onClose}>
                 Fertig
               </Button>
