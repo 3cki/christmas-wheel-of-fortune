@@ -1,4 +1,12 @@
 import {
+  gedichtQuestions,
+  wahrFalschQuestions,
+  liederQuestions,
+  schaetzenQuestions,
+  Question,
+} from "@/app/data/questions";
+import { CurrentGame } from "@/app/wheeloffortune/page";
+import {
   Modal,
   ModalContent,
   ModalHeader,
@@ -7,7 +15,7 @@ import {
   Button,
   useDraggable,
 } from "@nextui-org/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function QuestionModal({
   isOpen,
@@ -16,7 +24,7 @@ export default function QuestionModal({
 }: {
   isOpen: boolean;
   onOpenChange: () => void;
-  questionType?: string;
+  questionType?: CurrentGame;
 }) {
   const targetRef = useRef(null);
   const { moveProps } = useDraggable({
@@ -24,6 +32,40 @@ export default function QuestionModal({
     isDisabled: !isOpen,
     canOverflow: true,
   });
+  const [currentQuestion, setCurrentQuestion] = useState<Question>();
+
+  useEffect(() => {
+    let selectedQuestion;
+    switch (questionType) {
+      case "gedicht":
+        selectedQuestion =
+          gedichtQuestions[Math.floor(Math.random() * gedichtQuestions.length)];
+        setCurrentQuestion(selectedQuestion);
+        break;
+      case "wahr_falsch":
+        selectedQuestion =
+          wahrFalschQuestions[
+            Math.floor(Math.random() * wahrFalschQuestions.length)
+          ];
+        setCurrentQuestion(selectedQuestion);
+        break;
+      case "lieder":
+        selectedQuestion =
+          liederQuestions[Math.floor(Math.random() * liederQuestions.length)];
+        setCurrentQuestion(selectedQuestion);
+        break;
+      case "schaetzen":
+        selectedQuestion =
+          schaetzenQuestions[
+            Math.floor(Math.random() * schaetzenQuestions.length)
+          ];
+        setCurrentQuestion(selectedQuestion);
+        break;
+      default:
+        selectedQuestion = null;
+    }
+    console.log(selectedQuestion);
+  }, [isOpen, questionType]);
 
   return (
     <Modal
@@ -32,6 +74,7 @@ export default function QuestionModal({
       size="2xl"
       isDismissable={false}
       ref={targetRef}
+      backdrop="opaque"
     >
       <ModalContent className="border border-dotted border-red-400 border-8 rounded-xl">
         {(onClose) => (
@@ -40,16 +83,18 @@ export default function QuestionModal({
               {...moveProps}
               className="flex flex-col gap-1 text-2xl"
             >
-              {questionType || "Leer"}
+              {currentQuestion?.label} - Schwierigkeit{" "}
+              {currentQuestion?.difficulty}
             </ModalHeader>
             <ModalBody className="flex flex-col gap-8">
               <div className="text-xl">
-                <p>Vervollständige die Strophe:</p>
+                <p>{currentQuestion?.description}</p>
               </div>
               <div className="text-4xl flex flex-col items-center">
                 <div className="flex flex-col gap-4">
-                  <p>Oh Tannenbaum, oh ___________</p>
-                  <p>Wie _____ sind deine ________</p>
+                  {currentQuestion?.lines.map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
                 </div>
               </div>
             </ModalBody>

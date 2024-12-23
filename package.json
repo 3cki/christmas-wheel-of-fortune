@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@lottiefiles/react-lottie-player": "^3.5.4",
     "@nextui-org/react": "^2.6.8",
     "clsx": "^2.1.1",
     "currency.js": "^2.0.4",

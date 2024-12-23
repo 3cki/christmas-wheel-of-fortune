@@ -10,23 +10,12 @@ import React, { useState, useMemo } from "react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import QuestionModal from "@/app/components/question-modal";
 
-export type CurrentGame =
-  | "normal"
-  | "Gedicht vervollständigen"
-  | "Wahr / Falsch"
-  | "Weihnachstlieder trällern"
-  | "Schätzen";
+export type CurrentGame = "gedicht" | "wahr_falsch" | "lieder" | "schaetzen";
 
-export type Bets = {
-  [key: string]: number;
-};
-export type BetChoices = 0.1 | 0.2 | 0.5 | 1 | 2;
 export interface Slice {
   color: string;
   label: string;
-  value: number;
-  bonus: boolean;
-  target: keyof Bets;
+  type: CurrentGame;
 }
 
 const WheelOfFortune = () => {
@@ -77,7 +66,7 @@ const WheelOfFortune = () => {
         <QuestionModal
           isOpen={isOpen}
           onOpenChange={onOpenChange}
-          questionType={selectedSlice?.label}
+          questionType={selectedSlice?.type}
         />
       </div>
     </FullScreen>
