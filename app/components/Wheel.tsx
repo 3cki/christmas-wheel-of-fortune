@@ -14,7 +14,7 @@ const Wheel = (props: WheelProps) => {
   const slices: Slice[] = [
     {
       color: "darkgreen",
-      label: "Strophe",
+      label: "Vervollständige",
       type: "gedicht",
     },
     {
@@ -34,7 +34,7 @@ const Wheel = (props: WheelProps) => {
     },
     {
       color: "darkgreen",
-      label: "Strophe",
+      label: "Vervollständige",
       type: "gedicht",
     },
     {

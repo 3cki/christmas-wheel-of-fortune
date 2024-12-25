@@ -29,11 +29,23 @@ export default function InfoModal() {
               </ModalHeader>
               <ModalBody className="flex flex-col gap-8 text-2xl">
                 <p>
-                  1. Der Weihnachtsmann bietet ein Präsent zur Versteigerung an
+                  1. Der Weihnachtsmann bringt ein Geschenk zur Versteigerung.
+                  🎁
                 </p>
-                <p>2. Wenn sich mehrere melden, wird das Glücksrad gedreht</p>
-                <p>3. Wer als erstes die Aufgabe löst, gewinnt das Präsent</p>
-                <p>Teilnehmer mit weniger Präsenten werden bevorzugt</p>
+                <p>
+                  2. Wenn mehrere Teilnehmer interessiert sind, wird das
+                  Glücksrad gedreht. 🎡
+                </p>
+                <p>
+                  3. Wer sich zuerst meldet, darf versuchen, die Aufgabe zu
+                  lösen. Ist die Lösung falsch, kommt der nächste dran. Der
+                  letzte Teilnehmer gewinnt automatisch. 🎅
+                </p>
+                <p>
+                  Nachschlagen ist erlaubt – es zählt die Geschwindigkeit!
+                  Meldet ihr euch gleichzeitig, hat derjenige mit weniger
+                  Geschenken Vorrang. 🎁✨
+                </p>
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onPress={onClose}>
