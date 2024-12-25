@@ -13,42 +13,42 @@ interface WheelProps {
 const Wheel = (props: WheelProps) => {
   const slices: Slice[] = [
     {
-      color: "darkgreen",
+      color: "#cf4762",
       label: "Vervollständige",
       type: "gedicht",
     },
     {
-      color: "teal",
+      color: "#308060",
       label: "Wahr / Falsch",
       type: "wahr_falsch",
     },
     {
-      color: "purple",
+      color: "#1683b0",
       label: "Lieder trällern",
       type: "lieder",
     },
     {
-      color: "darkblue",
+      color: "#c57e4d",
       label: "Schätzen",
       type: "schaetzen",
     },
     {
-      color: "darkgreen",
+      color: "#cf4762",
       label: "Vervollständige",
       type: "gedicht",
     },
     {
-      color: "teal",
+      color: "#308060",
       label: "Wahr / Falsch",
       type: "wahr_falsch",
     },
     {
-      color: "purple",
+      color: "#1683b0",
       label: "Lieder trällern",
       type: "lieder",
     },
     {
-      color: "darkblue",
+      color: "#c57e4d",
       label: "Schätzen",
       type: "schaetzen",
     },
@@ -87,9 +87,11 @@ const Wheel = (props: WheelProps) => {
       <div className={`${styles.container}`}>
         <div className={`${styles.arrow}`} />
         <div
-          className={`${styles.middlebutton} cursor-pointer`}
+          className={`${styles.middlebutton} text-5xl cursor-pointer`}
           onClick={handleSpin}
-        ></div>
+        >
+          🎅
+        </div>
         <div
           className={`${styles.wheel}`}
           style={{ transform: `rotate(${angle}deg)` }}
@@ -97,13 +99,13 @@ const Wheel = (props: WheelProps) => {
           {slices.map((slice, index) => (
             <div key={index} className="text-xl font-bold tracking-wide">
               <div
-                className={styles.sector}
+                className={`${styles.sector}`}
                 style={{
-                  backgroundColor: `${slice.color}`,
                   zIndex: -1,
                   transform: `rotate(${index * (360 / slices.length)}deg)`,
                   clipPath: `polygon(0% -2%, 50% 50%, 0% 50%)`,
                   borderRadius: "50%",
+                  backgroundColor: slice.color,
                   //line up text and slices
                   rotate: `${90 + 180 / slices.length}deg`,
                 }}
