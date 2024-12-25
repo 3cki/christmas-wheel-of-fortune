@@ -28,10 +28,7 @@
   color: black;
   text-transform: uppercase;
   border-radius: 50%;
-  border: solid 2px black;
-  background: gold;
   z-index: 10;
-  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.72);
   transition: transform ease 0.2s;
 }
 

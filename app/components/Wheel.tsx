@@ -3,6 +3,8 @@
 import { useState } from "react";
 import styles from "./Wheel.module.css";
 import { Slice } from "../wheeloffortune/page";
+import FaceImageSrc from "@/public/img/face.png";
+import Image from "next/image";
 
 interface WheelProps {
   spinning: boolean;
@@ -90,7 +92,7 @@ const Wheel = (props: WheelProps) => {
           className={`${styles.middlebutton} text-5xl cursor-pointer`}
           onClick={handleSpin}
         >
-          🎅
+          <Image alt="" src={FaceImageSrc} />
         </div>
         <div
           className={`${styles.wheel}`}

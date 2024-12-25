@@ -73,7 +73,7 @@ export default function QuestionModal({
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      size="2xl"
+      size="3xl"
       isDismissable={false}
       ref={targetRef}
       backdrop="opaque"
