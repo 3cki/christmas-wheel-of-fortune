@@ -16,6 +16,11 @@ import {
   useDraggable,
 } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
+import TrueFalseImgSrc from "@/public/img/truefalse.png";
+import GuessImgSrc from "@/public/img/guess.png";
+import SingImgSrc from "@/public/img/sing.png";
+import CompleteImgSrc from "@/public/img/complete.png";
+import Image from "next/image";
 
 export default function QuestionModal({
   isOpen,
@@ -34,6 +39,7 @@ export default function QuestionModal({
   });
   const [currentQuestion, setCurrentQuestion] = useState<Question>();
   const [showAnswer, setShowAnswer] = useState(false);
+  const [currentImage, setCurrentImage] = useState(TrueFalseImgSrc);
 
   useEffect(() => {
     setShowAnswer(false);
@@ -42,6 +48,7 @@ export default function QuestionModal({
       case "gedicht":
         selectedQuestion =
           gedichtQuestions[Math.floor(Math.random() * gedichtQuestions.length)];
+        setCurrentImage(CompleteImgSrc);
         setCurrentQuestion(selectedQuestion);
         break;
       case "wahr_falsch":
@@ -49,11 +56,13 @@ export default function QuestionModal({
           wahrFalschQuestions[
             Math.floor(Math.random() * wahrFalschQuestions.length)
           ];
+        setCurrentImage(TrueFalseImgSrc);
         setCurrentQuestion(selectedQuestion);
         break;
       case "lieder":
         selectedQuestion =
           liederQuestions[Math.floor(Math.random() * liederQuestions.length)];
+        setCurrentImage(SingImgSrc);
         setCurrentQuestion(selectedQuestion);
         break;
       case "schaetzen":
@@ -61,6 +70,7 @@ export default function QuestionModal({
           schaetzenQuestions[
             Math.floor(Math.random() * schaetzenQuestions.length)
           ];
+        setCurrentImage(GuessImgSrc);
         setCurrentQuestion(selectedQuestion);
         break;
       default:
@@ -88,7 +98,12 @@ export default function QuestionModal({
               {currentQuestion?.label} - Schwierigkeit{" "}
               {currentQuestion?.difficulty} / 10
             </ModalHeader>
-            <ModalBody className="flex flex-col gap-8">
+            <ModalBody className="flex flex-col gap-8 justify-center items-center">
+              <Image
+                alt=""
+                className="fixed left-0 h-2/3 w-auto"
+                src={currentImage}
+              />
               <div className="text-xl">
                 <p>{currentQuestion?.description}</p>
               </div>
