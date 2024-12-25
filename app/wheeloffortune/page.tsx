@@ -37,7 +37,7 @@ const WheelOfFortune = () => {
       <div className="h-screen flex flex-col items-center justify-between screen">
         <div className="w-full flex items-center justify-end gap-4 p-4">
           <InfoModal />
-          <Button onPress={onOpen}>Letzte Frage erneut öffnen</Button>
+          {/* <Button onPress={onOpen}>Letzte Frage erneut öffnen</Button> */}
           <Button
             isIconOnly
             startContent={

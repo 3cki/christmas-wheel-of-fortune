@@ -99,7 +99,9 @@ export default function QuestionModal({
                   ))}
                 </div>
               </div>
-              {showAnswer && <div>{currentQuestion?.answer}</div>}
+              {showAnswer && (
+                <div className="italic text-xl">{currentQuestion?.answer}</div>
+              )}
             </ModalBody>
             <ModalFooter>
               <Button onPress={() => setShowAnswer(true)}>
