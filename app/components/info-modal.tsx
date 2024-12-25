@@ -25,7 +25,7 @@ export default function InfoModal() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-2xl">
-                How To - Ich dreh am Rad!
+                How To - Santa&apos;s Spin
               </ModalHeader>
               <ModalBody className="flex flex-col gap-8 text-2xl">
                 <p>
