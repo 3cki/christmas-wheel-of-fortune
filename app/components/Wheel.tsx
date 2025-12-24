@@ -18,6 +18,14 @@ function WheelSlice({
   totalSlices: number;
 }) {
   const rotation = index * (360 / totalSlices);
+  const sliceAngle = 360 / totalSlices;
+
+  // Calculate clip-path polygon based on slice angle
+  // The polygon creates a wedge from center (50%, 50%) to the left edge
+  // For a slice of `sliceAngle` degrees, calculate the y-offset
+  const angleRad = (sliceAngle * Math.PI) / 180;
+  const yOffset = 50 * Math.tan(angleRad);
+  const topY = Math.max(50 - yOffset - 2, -5); // -2 for overlap, min -5%
 
   return (
     <div className="text-xl font-bold tracking-wide">
@@ -27,7 +35,7 @@ function WheelSlice({
         style={{
           zIndex: -1,
           transform: `rotate(${rotation}deg)`,
-          clipPath: "polygon(0% -2%, 50% 50%, 0% 50%)",
+          clipPath: `polygon(0% ${topY}%, 50% 50%, 0% 52%)`,
           borderRadius: "50%",
           backgroundColor: slice.color,
           rotate: `${90 + 180 / totalSlices}deg`,

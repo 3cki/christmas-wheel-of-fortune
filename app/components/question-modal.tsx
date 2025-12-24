@@ -4,7 +4,9 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { Button, useDraggable } from "@nextui-org/react";
 import Image from "next/image";
 import { BaseModal } from "./ui/base-modal";
+import { PlacesAutocomplete } from "./ui/places-autocomplete";
 import { useQuestionSelection } from "@/app/hooks/use-question-selection";
+import { useGoogleMapsLoaded } from "./providers/google-maps-provider";
 import { GameType, GAME_TYPE_LABELS } from "@/app/config/constants";
 import { SpeakerWaveIcon } from "@heroicons/react/24/solid";
 
@@ -54,7 +56,16 @@ export default function QuestionModal({
     answer: string;
     langKey: string;
   } | null>(null);
+  const [place1, setPlace1] = useState<{ id: string; name: string } | null>(null);
+  const [place2, setPlace2] = useState<{ id: string; name: string } | null>(null);
+  const [distanceData, setDistanceData] = useState<{
+    distance: number;
+    place1Name: string;
+    place2Name: string;
+  } | null>(null);
+  const [isLoadingDistance, setIsLoadingDistance] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isGoogleMapsLoaded = useGoogleMapsLoaded();
   const {
     currentQuestion,
     selectRandomQuestion,
@@ -120,6 +131,25 @@ export default function QuestionModal({
     }
   }, []);
 
+  // Calculate distance between two places
+  const calculateDistance = useCallback(async (placeId1: string, placeId2: string) => {
+    setIsLoadingDistance(true);
+    try {
+      const response = await fetch("/api/distance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ placeId1, placeId2 }),
+      });
+      if (!response.ok) throw new Error("Distance calculation failed");
+      const data = await response.json();
+      setDistanceData(data);
+    } catch (error) {
+      console.error("Failed to calculate distance:", error);
+    } finally {
+      setIsLoadingDistance(false);
+    }
+  }, []);
+
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen && questionType) {
@@ -128,6 +158,9 @@ export default function QuestionModal({
       setRandomLetter("");
       setIsPlayingAudio(false);
       setTranslationData(null);
+      setPlace1(null);
+      setPlace2(null);
+      setDistanceData(null);
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -322,9 +355,40 @@ export default function QuestionModal({
     );
   }
 
-  // Entfernung Raten challenge: show two locations
-  if (isEntfernungRaten && currentQuestion) {
-    const [fromLocation, toLocation] = currentQuestion.lines;
+  // Entfernung Raten challenge: autocomplete inputs for places
+  if (isEntfernungRaten && step === "challenge") {
+    const handlePlace1Select = (placeId: string, placeName: string) => {
+      setPlace1({ id: placeId, name: placeName });
+      setDistanceData(null);
+      setShowAnswer(false);
+      if (place2) {
+        calculateDistance(placeId, place2.id);
+      }
+    };
+
+    const handlePlace2Select = (placeId: string, placeName: string) => {
+      setPlace2({ id: placeId, name: placeName });
+      setDistanceData(null);
+      setShowAnswer(false);
+      if (place1) {
+        calculateDistance(place1.id, placeId);
+      }
+    };
+
+    const handleReset = () => {
+      setPlace1(null);
+      setPlace2(null);
+      setDistanceData(null);
+      setShowAnswer(false);
+    };
+
+    const formatDistance = (meters: number): string => {
+      if (meters >= 1000) {
+        return `${(meters / 1000).toFixed(1)} km`;
+      }
+      return `${meters} m`;
+    };
+
     return (
       <BaseModal
         isOpen={isOpen}
@@ -335,13 +399,17 @@ export default function QuestionModal({
         headerProps={moveProps}
         footer={
           <>
-            {!showAnswer && (
+            {!showAnswer && distanceData && (
               <Button onPress={() => setShowAnswer(true)}>
                 Entfernung zeigen
               </Button>
             )}
-            <Button color="secondary" onPress={handleAnotherChallenge}>
-              Andere Strecke
+            <Button
+              color="secondary"
+              onPress={handleReset}
+              isDisabled={!place1 && !place2}
+            >
+              Neu starten
             </Button>
             <Button color="primary" onPress={() => onOpenChange()}>
               Fertig
@@ -350,14 +418,40 @@ export default function QuestionModal({
         }
       >
         <div className="flex flex-col gap-6 justify-center items-center">
-          <p className="text-xl">{currentQuestion.description}</p>
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-3xl font-bold text-primary">{fromLocation}</p>
-            <p className="text-2xl">↓</p>
-            <p className="text-3xl font-bold text-primary">{toLocation}</p>
-          </div>
-          {showAnswer && (
-            <p className="text-4xl font-bold mt-4">{currentQuestion.answer}</p>
+          <p className="text-xl">Wie weit ist es Luftlinie?</p>
+          {isGoogleMapsLoaded ? (
+            <div className="flex flex-col gap-4 w-full max-w-md">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm text-default-500">Von:</label>
+                <PlacesAutocomplete
+                  placeholder="Ersten Ort eingeben..."
+                  onPlaceSelect={handlePlace1Select}
+                />
+              </div>
+              <div className="flex justify-center">
+                <span className="text-2xl">↓</span>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm text-default-500">Nach:</label>
+                <PlacesAutocomplete
+                  placeholder="Zweiten Ort eingeben..."
+                  onPlaceSelect={handlePlace2Select}
+                />
+              </div>
+            </div>
+          ) : (
+            <p className="text-default-500">Lade Google Maps...</p>
+          )}
+          {isLoadingDistance && (
+            <p className="text-default-500">Berechne Entfernung...</p>
+          )}
+          {showAnswer && distanceData && (
+            <div className="flex flex-col items-center gap-2 mt-4">
+              <p className="text-lg text-default-500">Luftlinie:</p>
+              <p className="text-5xl font-bold text-primary">
+                {formatDistance(distanceData.distance)}
+              </p>
+            </div>
           )}
         </div>
       </BaseModal>

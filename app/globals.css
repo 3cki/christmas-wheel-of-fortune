@@ -22,6 +22,11 @@ body {
   pointer-events: none;
 }
 
+/* Google Places Autocomplete dropdown - ensure it appears above modals */
+.pac-container {
+  z-index: 10000 !important;
+}
+
 @media (max-width: 1200px) {
   body {
     font-size: 15px;
