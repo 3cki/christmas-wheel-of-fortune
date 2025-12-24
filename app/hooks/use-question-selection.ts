@@ -10,12 +10,8 @@ function getQuestionId(question: Question): string {
 }
 
 export function useQuestionSelection() {
-  const {
-    currentQuestion,
-    usedQuestionIds,
-    setCurrentQuestion,
-    markQuestionUsed,
-  } = useGameStore();
+  const { currentQuestion, setCurrentQuestion, markQuestionUsed } =
+    useGameStore();
 
   const selectRandomQuestion = useCallback(
     (questionType: GameType): Question | null => {
@@ -23,6 +19,9 @@ export function useQuestionSelection() {
       if (!config) return null;
 
       const questions = config.questions;
+
+      // Read usedQuestionIds directly from store to avoid dependency
+      const usedQuestionIds = useGameStore.getState().usedQuestionIds;
 
       // Filter out already used questions
       const availableQuestions = questions.filter(
@@ -42,7 +41,7 @@ export function useQuestionSelection() {
 
       return selected;
     },
-    [usedQuestionIds, setCurrentQuestion, markQuestionUsed]
+    [setCurrentQuestion, markQuestionUsed]
   );
 
   const getImageForType = useCallback((questionType: GameType) => {
