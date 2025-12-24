@@ -1,11 +1,13 @@
-import { Button, Input, Spacer } from "@nextui-org/react";
+"use client";
+
+import { useRef, useState } from "react";
+import { Button, Input } from "@nextui-org/react";
 import { TrashIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
-import { Participant, useParticipantsStore } from "@/app/state/participants";
-import { useState } from "react";
+import { Participant, useGameStore } from "@/app/state/game-store";
 import clsx from "clsx";
 
 export default function Table() {
-  const { participants } = useParticipantsStore();
+  const { participants } = useGameStore();
 
   return (
     <div className="w-3/5 p-4 bg-white rounded-lg grid grid-cols-3 gap-2 border border-dotted border-red-400 border-8">
@@ -21,25 +23,19 @@ export default function Table() {
 function Header() {
   return (
     <>
-      <HeaderRow />
-      <HeaderRow />
-      <HeaderRow />
+      <HeaderCell label="Name" />
+      <HeaderCell label="Geschenke" />
+      <HeaderCell label="" />
     </>
   );
 }
 
-function HeaderRow() {
-  return (
-    <div className="flex items-center justify-between">
-      <div className="font-bold">Name</div>
-      <div className="font-bold">Geschenke</div>
-    </div>
-  );
+function HeaderCell({ label }: { label: string }) {
+  return <div className="font-bold text-center">{label}</div>;
 }
 
 function ParticipantRow({ participant }: { participant: Participant }) {
-  const { removeParticipant, increaseGifts, decreaseGifts } =
-    useParticipantsStore();
+  const { removeParticipant, increaseGifts, decreaseGifts } = useGameStore();
 
   return (
     <div
@@ -54,9 +50,11 @@ function ParticipantRow({ participant }: { participant: Participant }) {
           size="sm"
           color="danger"
           variant="flat"
-          startContent={<TrashIcon className="h-4 w-4" />}
           onPress={() => removeParticipant(participant.id)}
-        />
+          aria-label={`Remove ${participant.name}`}
+        >
+          <TrashIcon className="h-4 w-4" />
+        </Button>
         {participant.name}
       </div>
       <div className="flex items-center gap-2">
@@ -65,44 +63,54 @@ function ParticipantRow({ participant }: { participant: Participant }) {
           size="sm"
           variant="flat"
           color="danger"
-          startContent={<MinusIcon className="h-4 w-4" />}
           onPress={() => decreaseGifts(participant.id)}
-        />
+          aria-label={`Decrease gifts for ${participant.name}`}
+        >
+          <MinusIcon className="h-4 w-4" />
+        </Button>
         {participant.gifts}
         <Button
           isIconOnly
           size="sm"
           color="primary"
-          startContent={<PlusIcon className="h-4 w-4" />}
           onPress={() => increaseGifts(participant.id)}
-        />
+          aria-label={`Increase gifts for ${participant.name}`}
+        >
+          <PlusIcon className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
 }
 
 function AddParticipantRow() {
-  const { addParticipant } = useParticipantsStore();
+  const { addParticipant } = useGameStore();
   const [newParticipantName, setNewParticipantName] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newParticipantName.trim()) return;
+
+    addParticipant(newParticipantName);
+    setNewParticipantName("");
+
+    // Use ref instead of document.getElementById
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+  };
 
   return (
-    <form
-      className="col-span-3 flex items-center gap-4"
-      onSubmit={(e) => {
-        e.preventDefault();
-        addParticipant(newParticipantName);
-        setNewParticipantName("");
-        setTimeout(() => {
-          document.getElementById("new-participant-input")?.focus();
-        }, 0);
-      }}
-    >
+    <form className="col-span-3 flex items-center gap-4" onSubmit={handleSubmit}>
       <Input
-        id="new-participant-input"
+        ref={inputRef}
         variant="bordered"
         autoFocus
         value={newParticipantName}
         onChange={(e) => setNewParticipantName(e.target.value)}
+        placeholder="Name eingeben"
+        aria-label="New participant name"
       />
       <Button color="primary" variant="flat" type="submit">
         Hinzufügen

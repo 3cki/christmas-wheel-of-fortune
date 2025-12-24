@@ -2,22 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --one: #78acab;
-  --two: #dca84d;
-  --five: #e8b3aa;
-  --ten: #a39acc;
-  --cf: #171e70;
-  --pch: #cd3aa4;
-  --ch: #266a3c;
-  --jp: #b61c00;
-  --ten-cent: #4caf50;
-  --twenty-cent: #2196f3;
-  --fifty-cent: #f44336;
-  --one-euro: #ffeb3b;
-  --two-euro: #9c27b0;
-}
-
 html {
   width: 100vw;
   margin: 0;

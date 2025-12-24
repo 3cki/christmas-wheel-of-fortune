@@ -1,134 +1,79 @@
-import {
-  gedichtQuestions,
-  wahrFalschQuestions,
-  liederQuestions,
-  schaetzenQuestions,
-  Question,
-} from "@/app/data/questions";
-import { CurrentGame } from "@/app/wheeloffortune/page";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDraggable,
-} from "@nextui-org/react";
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import TrueFalseImgSrc from "@/public/img/truefalse.png";
-import GuessImgSrc from "@/public/img/guess.png";
-import SingImgSrc from "@/public/img/sing.png";
-import CompleteImgSrc from "@/public/img/complete.png";
+import { Button, useDraggable } from "@nextui-org/react";
 import Image from "next/image";
+import { BaseModal } from "./ui/base-modal";
+import { useQuestionSelection } from "@/app/hooks/use-question-selection";
+import { GameType } from "@/app/config/constants";
+
+interface QuestionModalProps {
+  isOpen: boolean;
+  onOpenChange: () => void;
+  questionType?: GameType;
+}
 
 export default function QuestionModal({
   isOpen,
   onOpenChange,
   questionType,
-}: {
-  isOpen: boolean;
-  onOpenChange: () => void;
-  questionType?: CurrentGame;
-}) {
-  const targetRef = useRef(null);
+}: QuestionModalProps) {
+  const targetRef = useRef<HTMLElement>(null);
   const { moveProps } = useDraggable({
     targetRef,
     isDisabled: !isOpen,
     canOverflow: true,
   });
-  const [currentQuestion, setCurrentQuestion] = useState<Question>();
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [currentImage, setCurrentImage] = useState(TrueFalseImgSrc);
 
+  const [showAnswer, setShowAnswer] = useState(false);
+  const { currentQuestion, selectRandomQuestion, getImageForType } =
+    useQuestionSelection();
+
+  // Select a new question when modal opens
   useEffect(() => {
-    setShowAnswer(false);
-    let selectedQuestion;
-    switch (questionType) {
-      case "gedicht":
-        selectedQuestion =
-          gedichtQuestions[Math.floor(Math.random() * gedichtQuestions.length)];
-        setCurrentImage(CompleteImgSrc);
-        setCurrentQuestion(selectedQuestion);
-        break;
-      case "wahr_falsch":
-        selectedQuestion =
-          wahrFalschQuestions[
-            Math.floor(Math.random() * wahrFalschQuestions.length)
-          ];
-        setCurrentImage(TrueFalseImgSrc);
-        setCurrentQuestion(selectedQuestion);
-        break;
-      case "lieder":
-        selectedQuestion =
-          liederQuestions[Math.floor(Math.random() * liederQuestions.length)];
-        setCurrentImage(SingImgSrc);
-        setCurrentQuestion(selectedQuestion);
-        break;
-      case "schaetzen":
-        selectedQuestion =
-          schaetzenQuestions[
-            Math.floor(Math.random() * schaetzenQuestions.length)
-          ];
-        setCurrentImage(GuessImgSrc);
-        setCurrentQuestion(selectedQuestion);
-        break;
-      default:
-        selectedQuestion = null;
+    if (isOpen && questionType) {
+      setShowAnswer(false);
+      selectRandomQuestion(questionType);
     }
-    console.log(selectedQuestion);
-  }, [isOpen, questionType]);
+  }, [isOpen, questionType, selectRandomQuestion]);
+
+  const currentImage = questionType ? getImageForType(questionType) : null;
+
+  if (!currentQuestion || !currentImage) return null;
 
   return (
-    <Modal
+    <BaseModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
+      title={`${currentQuestion.label} - Schwierigkeit ${currentQuestion.difficulty} / 10`}
       size="3xl"
-      isDismissable={false}
-      ref={targetRef}
-      backdrop="opaque"
+      modalRef={targetRef}
+      headerProps={moveProps}
+      footer={
+        <>
+          <Button onPress={() => setShowAnswer(true)}>Antwort anzeigen</Button>
+          <Button color="primary" onPress={() => onOpenChange()}>
+            Fertig
+          </Button>
+        </>
+      }
     >
-      <ModalContent className="border border-dotted border-red-400 border-8 rounded-xl">
-        {(onClose) => (
-          <>
-            <ModalHeader
-              {...moveProps}
-              className="flex flex-col gap-1 text-2xl"
-            >
-              {currentQuestion?.label} - Schwierigkeit{" "}
-              {currentQuestion?.difficulty} / 10
-            </ModalHeader>
-            <ModalBody className="flex flex-col gap-8 justify-center items-center">
-              <Image
-                alt=""
-                className="fixed left-0 h-2/3 w-auto"
-                src={currentImage}
-              />
-              <div className="text-xl">
-                <p>{currentQuestion?.description}</p>
-              </div>
-              <div className="text-4xl flex flex-col items-center">
-                <div className="flex flex-col gap-4">
-                  {currentQuestion?.lines.map((line, index) => (
-                    <p key={index}>{line}</p>
-                  ))}
-                </div>
-              </div>
-              {showAnswer && (
-                <div className="italic text-xl">{currentQuestion?.answer}</div>
-              )}
-            </ModalBody>
-            <ModalFooter>
-              <Button onPress={() => setShowAnswer(true)}>
-                Antwort anzeigen
-              </Button>
-              <Button color="primary" onPress={onClose}>
-                Fertig
-              </Button>
-            </ModalFooter>
-          </>
+      <div className="flex flex-col gap-8 justify-center items-center">
+        <Image
+          alt=""
+          className="fixed left-0 h-2/3 w-auto"
+          src={currentImage}
+        />
+        <p className="text-xl">{currentQuestion.description}</p>
+        <div className="text-4xl flex flex-col items-center gap-4">
+          {currentQuestion.lines.map((line, index) => (
+            <p key={index}>{line}</p>
+          ))}
+        </div>
+        {showAnswer && (
+          <p className="italic text-xl">{currentQuestion.answer}</p>
         )}
-      </ModalContent>
-    </Modal>
+      </div>
+    </BaseModal>
   );
 }

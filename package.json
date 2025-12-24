@@ -1,5 +1,5 @@
 {
-  "name": "newproject",
+  "name": "christmas-wheel-of-fortune",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,32 +13,24 @@
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@nextui-org/react": "^2.6.8",
     "clsx": "^2.1.1",
-    "currency.js": "^2.0.4",
-    "daisyui": "^4.12.14",
     "framer-motion": "^11.15.0",
-    "heroicons": "^2.2.0",
     "lottie-web": "^5.12.2",
-    "matter-js": "^0.20.0",
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18",
     "react-full-screen": "^1.1.1",
     "sass": "^1.81.0",
-    "sass-loader": "^16.0.3",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
-    "@types/matter-js": "^0.19.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
-    "file-loader": "^6.2.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "webpack": "^5.96.1"
+    "typescript": "^5"
   }
 }
