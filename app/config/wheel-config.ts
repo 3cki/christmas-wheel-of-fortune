@@ -10,7 +10,7 @@ export interface SliceConfig {
 const BASE_SLICES: SliceConfig[] = [
   { color: COLORS.gedicht, label: "Vervollständige", type: "gedicht" },
   { color: COLORS.wahr_falsch, label: "Wahr / Falsch", type: "wahr_falsch" },
-  { color: COLORS.lieder, label: "Lieder trällern", type: "lieder" },
+  { color: COLORS.stadt_land_fluss, label: "Stadt Land Fluss", type: "stadt_land_fluss" },
   { color: COLORS.schaetzen, label: "Schätzen", type: "schaetzen" },
 ];
 

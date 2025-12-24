@@ -2,7 +2,7 @@
 export const GAME_TYPES = [
   "gedicht",
   "wahr_falsch",
-  "lieder",
+  "stadt_land_fluss",
   "schaetzen",
 ] as const;
 
@@ -19,7 +19,7 @@ export const WHEEL_CONFIG = {
 export const COLORS = {
   gedicht: "#cf4762", // Red
   wahr_falsch: "#308060", // Green
-  lieder: "#1683b0", // Blue
+  stadt_land_fluss: "#1683b0", // Blue
   schaetzen: "#c57e4d", // Orange/Brown
 } as const;
 
@@ -27,6 +27,6 @@ export const COLORS = {
 export const GAME_TYPE_LABELS: Record<GameType, string> = {
   gedicht: "Vervollständige",
   wahr_falsch: "Wahr / Falsch",
-  lieder: "Lieder trällern",
+  stadt_land_fluss: "Stadt Land Fluss",
   schaetzen: "Schätzen",
 };

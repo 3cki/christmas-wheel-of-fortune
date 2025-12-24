@@ -2,7 +2,6 @@ import { GameType } from "./constants";
 import {
   gedichtQuestions,
   wahrFalschQuestions,
-  liederQuestions,
   schaetzenQuestions,
   Question,
 } from "@/app/data/questions";
@@ -10,7 +9,7 @@ import { StaticImageData } from "next/image";
 
 import TrueFalseImgSrc from "@/public/img/truefalse.png";
 import GuessImgSrc from "@/public/img/guess.png";
-import SingImgSrc from "@/public/img/sing.png";
+import StadtLandFlussImgSrc from "@/public/img/sing.png";
 import CompleteImgSrc from "@/public/img/complete.png";
 
 export interface QuestionTypeConfig {
@@ -32,11 +31,11 @@ export const QUESTION_TYPE_CONFIG: Record<GameType, QuestionTypeConfig> = {
     description:
       "Dir wird eine Aussage über Weihnachten präsentiert. Entscheide, ob sie wahr oder falsch ist. Manchmal ist es kniffliger als gedacht!",
   },
-  lieder: {
-    image: SingImgSrc,
-    questions: liederQuestions,
+  stadt_land_fluss: {
+    image: StadtLandFlussImgSrc,
+    questions: [],
     description:
-      "Jetzt wird gesungen! Du bekommst den Namen eines Weihnachtslieds und sollst die erste Strophe zum Besten geben. Trau dich - es geht um den Spaß!",
+      "Stadt, Land, Fluss - aber weihnachtlich! Du bekommst einen zufälligen Buchstaben und musst schnell passende Begriffe finden: Eine Stadt, ein Land, etwas Weihnachtliches und ein Geschenk - alles mit dem gleichen Anfangsbuchstaben!",
   },
   schaetzen: {
     image: GuessImgSrc,
