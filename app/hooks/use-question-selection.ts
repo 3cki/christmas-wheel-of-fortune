@@ -19,18 +19,28 @@ export function useQuestionSelection() {
       if (!config) return null;
 
       const questions = config.questions;
+      if (questions.length === 0) return null;
 
-      // Read usedQuestionIds directly from store to avoid dependency
-      const usedQuestionIds = useGameStore.getState().usedQuestionIds;
+      // Read state directly from store to avoid dependency
+      const { usedQuestionIds, currentQuestion: current } =
+        useGameStore.getState();
+      const currentId = current ? getQuestionId(current) : null;
 
-      // Filter out already used questions
-      const availableQuestions = questions.filter(
-        (q) => !usedQuestionIds.includes(getQuestionId(q))
-      );
+      // Filter out already used questions AND the current question
+      const availableQuestions = questions.filter((q) => {
+        const id = getQuestionId(q);
+        return !usedQuestionIds.includes(id) && id !== currentId;
+      });
 
-      // If all questions used, use full pool (allows cycling)
-      const pool =
-        availableQuestions.length > 0 ? availableQuestions : questions;
+      // If no available questions, reset pool but still exclude current
+      let pool = availableQuestions;
+      if (pool.length === 0) {
+        pool = questions.filter((q) => getQuestionId(q) !== currentId);
+        // If still empty (only 1 question exists), use all questions
+        if (pool.length === 0) {
+          pool = questions;
+        }
+      }
 
       // Select random question from pool
       const selected = pool[Math.floor(Math.random() * pool.length)];

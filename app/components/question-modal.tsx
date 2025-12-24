@@ -12,9 +12,12 @@ type ModalStep = "intro" | "challenge";
 // Letters for Stadt Land Fluss (excluding difficult letters like Q, X, Y)
 const STADT_LAND_FLUSS_LETTERS = "ABCDEFGHIKLMNOPRSTUVWZ";
 
-function getRandomLetter(): string {
-  const index = Math.floor(Math.random() * STADT_LAND_FLUSS_LETTERS.length);
-  return STADT_LAND_FLUSS_LETTERS[index];
+function getRandomLetter(excludeLetter?: string): string {
+  const available = excludeLetter
+    ? STADT_LAND_FLUSS_LETTERS.replace(excludeLetter, "")
+    : STADT_LAND_FLUSS_LETTERS;
+  const index = Math.floor(Math.random() * available.length);
+  return available[index];
 }
 
 interface QuestionModalProps {
@@ -46,6 +49,7 @@ export default function QuestionModal({
   } = useQuestionSelection();
 
   const isStadtLandFluss = questionType === "stadt_land_fluss";
+  const isBerlinFoto = questionType === "berlin_foto";
 
   // Reset state when modal opens
   useEffect(() => {
@@ -71,7 +75,7 @@ export default function QuestionModal({
   const handleAnotherChallenge = () => {
     if (questionType) {
       if (isStadtLandFluss) {
-        setRandomLetter(getRandomLetter());
+        setRandomLetter(getRandomLetter(randomLetter));
       } else {
         selectRandomQuestion(questionType);
       }
@@ -149,8 +153,56 @@ export default function QuestionModal({
           <p className="text-xl">Euer Buchstabe ist:</p>
           <p className="text-9xl font-bold text-primary">{randomLetter}</p>
           <div className="text-lg text-center text-default-500">
-            <p>Stadt - Land - Weihnachtliches - Geschenk</p>
+            <p>Stadt - Land - Weihnachten</p>
           </div>
+        </div>
+      </BaseModal>
+    );
+  }
+
+  // Berlin Foto challenge: show photo and Google Maps link
+  if (isBerlinFoto && currentQuestion) {
+    const photoPath = currentQuestion.lines[0];
+    return (
+      <BaseModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        title="Wo in Berlin?"
+        size="3xl"
+        modalRef={targetRef}
+        headerProps={moveProps}
+        footer={
+          <>
+            {!showAnswer && (
+              <Button onPress={() => setShowAnswer(true)}>Ort zeigen</Button>
+            )}
+            <Button color="secondary" onPress={handleAnotherChallenge}>
+              Anderes Foto
+            </Button>
+            <Button color="primary" onPress={() => onOpenChange()}>
+              Fertig
+            </Button>
+          </>
+        }
+      >
+        <div className="flex flex-col gap-6 justify-center items-center">
+          <p className="text-xl">{currentQuestion.description}</p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt="Wo in Berlin?"
+            className="max-h-[50vh] w-auto rounded-lg shadow-lg"
+            src={photoPath}
+          />
+          {showAnswer && (
+            <a
+              href={currentQuestion.answer}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline text-xl"
+            >
+              Auf Google Maps ansehen
+            </a>
+          )}
         </div>
       </BaseModal>
     );

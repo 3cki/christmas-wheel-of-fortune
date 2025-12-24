@@ -70,88 +70,18 @@ export const gedichtQuestions: Question[] = [
   },
 ];
 
-export const wahrFalschQuestions: Question[] = [
-  {
-    label: "Farbe von Santa",
-    description: "Stimmt das?",
-    lines: ["Der Weihnachtsmann trägt traditionell eine grüne Kleidung."],
-    answer: "Falsch",
-    difficulty: 1,
-  },
-  {
-    label: "Nikolaus",
-    description: "Stimmt das?",
-    lines: ["Die Figur des Weihnachtsmanns basiert auf dem heiligen Nikolaus."],
-    answer: "Wahr",
-    difficulty: 5,
-  },
-  {
-    label: "Weihnachtskarten",
-    description: "Stimmt das?",
-    lines: [
-      "In Großbritannien wurde die Tradition, Weihnachtskarten zu verschicken, erfunden.",
-    ],
-    answer: "Wahr",
-    difficulty: 6,
-  },
-  {
-    label: "Weihnachtsstern",
-    description: "Stimmt das?",
-    lines: [
-      "Der Weihnachtsstern ist eine Pflanze, die oft zur Dekoration verwendet wird.",
-    ],
-    answer: "Wahr",
-    difficulty: 2,
-  },
-  {
-    label: "Hexe Befana",
-    description: "Stimmt das?",
-    lines: ["In Italien bringt die Hexe Buffala Geschenke zu Weihnachten."],
-    answer: "Falsch",
-    difficulty: 7,
-  },
-  {
-    label: "Ziegenbock",
-    description: "Stimmt das?",
-    lines: [
-      "In Schweden wird Weihnachten mit einem riesigen Ziegenbock aus Stroh gefeiert.",
-    ],
-    answer: "Wahr",
-    difficulty: 8,
-  },
-  {
-    label: "Adventskranz",
-    description: "Stimmt das?",
-    lines: ["Der Adventskranz wurde erstmals in Italien erfunden."],
-    answer: "Falsch",
-    difficulty: 9,
-  },
-  {
-    label: "Rudolf",
-    description: "Stimmt das?",
-    lines: [
-      "Rentier Rudolf wurde bereits im Mittelalter als Teil der Weihnachtsgeschichte erwähnt.",
-    ],
-    answer: "Falsch",
-    difficulty: 3,
-  },
-  {
-    label: "Lichtfest",
-    description: "Stimmt das?",
-    lines: [
-      "Der Begriff 'Weihnachten' leitet sich vom altrömischen Wort für 'Lichtfest' ab.",
-    ],
-    answer: "Falsch",
-    difficulty: 10,
-  },
-  {
-    label: "Römer",
-    description: "Stimmt das?",
-    lines: ["Weihnachtsmärkte gibt es seit der Römerzeit."],
-    answer: "Falsch",
-    difficulty: 4,
-  },
-];
+import berlinData from "./berlin.json";
+
+// Berlin photo questions - generated from berlin.json
+export const berlinFotoQuestions: Question[] = Object.entries(berlinData).map(
+  ([key, mapsLink], index) => ({
+    label: `Foto ${index + 1}`,
+    description: "Wo in Berlin ist das?",
+    lines: [`/img/berlin/${key}.png`],
+    answer: mapsLink,
+    difficulty: index + 1,
+  })
+);
 
 export const schaetzenQuestions: Question[] = [
   {

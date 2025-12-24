@@ -9,7 +9,7 @@ export interface SliceConfig {
 // Base slices (4 categories)
 const BASE_SLICES: SliceConfig[] = [
   { color: COLORS.gedicht, label: "Vervollständige", type: "gedicht" },
-  { color: COLORS.wahr_falsch, label: "Wahr / Falsch", type: "wahr_falsch" },
+  { color: COLORS.berlin_foto, label: "Wo in Berlin?", type: "berlin_foto" },
   { color: COLORS.stadt_land_fluss, label: "Stadt Land Fluss", type: "stadt_land_fluss" },
   { color: COLORS.schaetzen, label: "Schätzen", type: "schaetzen" },
 ];

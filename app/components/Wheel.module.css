@@ -51,7 +51,7 @@
 
 .wheel {
   width: 95vw;
-  max-width: 50rem;
+  max-width: 65rem;
   aspect-ratio: 1/1;
   border-radius: 50%;
   border: 5px solid gold;
@@ -94,14 +94,14 @@
 
 @media (max-width: 1920px) {
   .container {
-    font-size: 18px;
+    font-size: 20px;
   }
   .bonusSector {
     left: -46.5%;
   }
 
   .wheel {
-    max-width: 35rem;
+    max-width: 45rem;
   }
 }
 

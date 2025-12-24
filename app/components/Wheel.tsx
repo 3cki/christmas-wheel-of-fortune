@@ -51,7 +51,7 @@ export default function Wheel() {
   const { angle, spin, isSpinning } = useWheelSpin();
 
   return (
-    <div className="w-2/5">
+    <div className="w-3/5">
       <div className={styles.container}>
         <div className={styles.arrow} />
         <button
