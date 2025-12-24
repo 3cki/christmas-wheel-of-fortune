@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/text-to-speech": "^6.4.0",
     "@heroicons/react": "^2.2.0",
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@nextui-org/react": "^2.6.8",

@@ -1,0 +1,52 @@
+[
+  {
+    "sentence": "Frohe Weihnachten und ein gutes neues Jahr!",
+    "language": "Deutsch",
+    "languageCode": "de-DE"
+  },
+  {
+    "sentence": "Merry Christmas and a Happy New Year!",
+    "language": "Englisch",
+    "languageCode": "en-US"
+  },
+  {
+    "sentence": "Joyeux Noël et bonne année!",
+    "language": "Französisch",
+    "languageCode": "fr-FR"
+  },
+  {
+    "sentence": "Feliz Navidad y próspero año nuevo!",
+    "language": "Spanisch",
+    "languageCode": "es-ES"
+  },
+  {
+    "sentence": "Buon Natale e felice anno nuovo!",
+    "language": "Italienisch",
+    "languageCode": "it-IT"
+  },
+  {
+    "sentence": "Wesołych Świąt i szczęśliwego nowego roku!",
+    "language": "Polnisch",
+    "languageCode": "pl-PL"
+  },
+  {
+    "sentence": "God Jul och Gott Nytt År!",
+    "language": "Schwedisch",
+    "languageCode": "sv-SE"
+  },
+  {
+    "sentence": "Vrolijk Kerstfeest en een gelukkig nieuwjaar!",
+    "language": "Niederländisch",
+    "languageCode": "nl-NL"
+  },
+  {
+    "sentence": "Счастливого Рождества и счастливого Нового года!",
+    "language": "Russisch",
+    "languageCode": "ru-RU"
+  },
+  {
+    "sentence": "メリークリスマス、そして良いお年を!",
+    "language": "Japanisch",
+    "languageCode": "ja-JP"
+  }
+]

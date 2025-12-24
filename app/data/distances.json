@@ -1,0 +1,17 @@
+[
+  {
+    "from": "Brandenburger Tor",
+    "to": "Fernsehturm",
+    "distance": "1800"
+  },
+  {
+    "from": "Alexanderplatz",
+    "to": "Potsdamer Platz",
+    "distance": "2200"
+  },
+  {
+    "from": "Reichstag",
+    "to": "Checkpoint Charlie",
+    "distance": "2100"
+  }
+]

@@ -1,16 +1,18 @@
 import { GameType } from "./constants";
 import {
-  gedichtQuestions,
   berlinFotoQuestions,
-  schaetzenQuestions,
+  entfernungQuestions,
+  spracheQuestions,
   Question,
 } from "@/app/data/questions";
 import { StaticImageData } from "next/image";
 
 import BerlinFotoImgSrc from "@/public/img/truefalse.png";
-import GuessImgSrc from "@/public/img/guess.png";
+import SongRatenImgSrc from "@/public/img/guess.png";
 import StadtLandFlussImgSrc from "@/public/img/sing.png";
-import CompleteImgSrc from "@/public/img/complete.png";
+import MontagsmalerImgSrc from "@/public/img/complete.png";
+import EntfernungImgSrc from "@/public/img/guess.png";
+import SpracheImgSrc from "@/public/img/complete.png";
 
 export interface QuestionTypeConfig {
   image: StaticImageData;
@@ -19,11 +21,11 @@ export interface QuestionTypeConfig {
 }
 
 export const QUESTION_TYPE_CONFIG: Record<GameType, QuestionTypeConfig> = {
-  gedicht: {
-    image: CompleteImgSrc,
-    questions: gedichtQuestions,
+  song_raten: {
+    image: SongRatenImgSrc,
+    questions: [],
     description:
-      "Bei dieser Kategorie bekommst du den Anfang eines bekannten Weihnachtsgedichts oder -lieds. Deine Aufgabe ist es, die fehlenden Wörter zu ergänzen. Zeig, wie gut du die Klassiker kennst!",
+      "Ohren gespitzt! Ein Song wird abgespielt und ihr müsst erraten, welcher es ist. Wer den Titel und Interpreten zuerst nennt, gewinnt!",
   },
   berlin_foto: {
     image: BerlinFotoImgSrc,
@@ -37,10 +39,22 @@ export const QUESTION_TYPE_CONFIG: Record<GameType, QuestionTypeConfig> = {
     description:
       "Stadt, Land, Fluss - aber weihnachtlich! Du bekommst einen zufälligen Buchstaben und musst schnell passende Begriffe finden: Eine Stadt, ein Land und etwas Weihnachtliches - alles mit dem gleichen Anfangsbuchstaben!",
   },
-  schaetzen: {
-    image: GuessImgSrc,
-    questions: schaetzenQuestions,
+  montagsmaler: {
+    image: MontagsmalerImgSrc,
+    questions: [],
     description:
-      "Bei dieser Kategorie geht es ums Schätzen. Dir wird eine Frage mit einer Zahl als Antwort gestellt. Wer am nächsten dran ist, gewinnt!",
+      "Zeit zum Malen! Eine Person malt einen Begriff und die anderen müssen erraten, was es ist. Dabei darf nicht gesprochen oder geschrieben werden - nur malen!",
+  },
+  entfernung_raten: {
+    image: EntfernungImgSrc,
+    questions: entfernungQuestions,
+    description:
+      "Wie weit ist es? Zwei Orte in Berlin werden genannt und ihr müsst die Entfernung in Metern schätzen. Wer am nächsten dran ist, gewinnt!",
+  },
+  sprache_raten: {
+    image: SpracheImgSrc,
+    questions: spracheQuestions,
+    description:
+      "Sprachtalent gefragt! Ein Satz wird in einer fremden Sprache angezeigt. Erkennt ihr, welche Sprache das ist?",
   },
 };

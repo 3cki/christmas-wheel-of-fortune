@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Button, useDraggable } from "@nextui-org/react";
 import Image from "next/image";
 import { BaseModal } from "./ui/base-modal";
 import { useQuestionSelection } from "@/app/hooks/use-question-selection";
 import { GameType, GAME_TYPE_LABELS } from "@/app/config/constants";
+import { SpeakerWaveIcon } from "@heroicons/react/24/solid";
 
 type ModalStep = "intro" | "challenge";
 
@@ -19,6 +20,9 @@ function getRandomLetter(excludeLetter?: string): string {
   const index = Math.floor(Math.random() * available.length);
   return available[index];
 }
+
+// Categories that only show instructions (no specific questions)
+const INSTRUCTION_ONLY_CATEGORIES: GameType[] = ["song_raten", "montagsmaler"];
 
 interface QuestionModalProps {
   isOpen: boolean;
@@ -41,6 +45,9 @@ export default function QuestionModal({
   const [step, setStep] = useState<ModalStep>("intro");
   const [showAnswer, setShowAnswer] = useState(false);
   const [randomLetter, setRandomLetter] = useState<string>("");
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const {
     currentQuestion,
     selectRandomQuestion,
@@ -50,6 +57,43 @@ export default function QuestionModal({
 
   const isStadtLandFluss = questionType === "stadt_land_fluss";
   const isBerlinFoto = questionType === "berlin_foto";
+  const isEntfernungRaten = questionType === "entfernung_raten";
+  const isSpracheRaten = questionType === "sprache_raten";
+  const isInstructionOnly =
+    questionType && INSTRUCTION_ONLY_CATEGORIES.includes(questionType);
+
+  // Play TTS audio
+  const playAudio = useCallback(async (text: string, languageCode: string) => {
+    setIsLoadingAudio(true);
+    try {
+      const response = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, languageCode }),
+      });
+
+      if (!response.ok) throw new Error("TTS failed");
+
+      const { audio } = await response.json();
+      const audioBlob = new Blob(
+        [Uint8Array.from(atob(audio), (c) => c.charCodeAt(0))],
+        { type: "audio/mp3" }
+      );
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      audioRef.current = new Audio(audioUrl);
+      audioRef.current.onended = () => setIsPlayingAudio(false);
+      audioRef.current.play();
+      setIsPlayingAudio(true);
+    } catch (error) {
+      console.error("Failed to play audio:", error);
+    } finally {
+      setIsLoadingAudio(false);
+    }
+  }, []);
 
   // Reset state when modal opens
   useEffect(() => {
@@ -57,6 +101,11 @@ export default function QuestionModal({
       setStep("intro");
       setShowAnswer(false);
       setRandomLetter("");
+      setIsPlayingAudio(false);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
     }
   }, [isOpen, questionType]);
 
@@ -64,7 +113,7 @@ export default function QuestionModal({
     if (questionType) {
       if (isStadtLandFluss) {
         setRandomLetter(getRandomLetter());
-      } else {
+      } else if (!isInstructionOnly) {
         selectRandomQuestion(questionType);
       }
       setStep("challenge");
@@ -102,7 +151,7 @@ export default function QuestionModal({
         footer={
           <>
             <Button color="primary" onPress={handleShowChallenge}>
-              Aufgabe zeigen
+              {isInstructionOnly ? "Los geht's!" : "Aufgabe zeigen"}
             </Button>
           </>
         }
@@ -116,6 +165,41 @@ export default function QuestionModal({
             />
           )}
           <p className="text-2xl text-center max-w-lg">{categoryDescription}</p>
+        </div>
+      </BaseModal>
+    );
+  }
+
+  // Instruction-only categories: just show "Los geht's!" confirmation
+  if (isInstructionOnly) {
+    return (
+      <BaseModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        title={categoryLabel}
+        size="3xl"
+        modalRef={targetRef}
+        headerProps={moveProps}
+        footer={
+          <>
+            <Button color="primary" onPress={() => onOpenChange()}>
+              Fertig
+            </Button>
+          </>
+        }
+      >
+        <div className="flex flex-col gap-8 justify-center items-center">
+          {currentImage && (
+            <Image
+              alt=""
+              className="fixed left-0 h-2/3 w-auto"
+              src={currentImage}
+            />
+          )}
+          <p className="text-6xl font-bold text-primary">Los geht's!</p>
+          <p className="text-xl text-center text-default-500">
+            {categoryDescription}
+          </p>
         </div>
       </BaseModal>
     );
@@ -208,7 +292,104 @@ export default function QuestionModal({
     );
   }
 
-  // Regular challenge step: show the question
+  // Entfernung Raten challenge: show two locations
+  if (isEntfernungRaten && currentQuestion) {
+    const [fromLocation, toLocation] = currentQuestion.lines;
+    return (
+      <BaseModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        title="Entfernung Raten"
+        size="3xl"
+        modalRef={targetRef}
+        headerProps={moveProps}
+        footer={
+          <>
+            {!showAnswer && (
+              <Button onPress={() => setShowAnswer(true)}>
+                Entfernung zeigen
+              </Button>
+            )}
+            <Button color="secondary" onPress={handleAnotherChallenge}>
+              Andere Strecke
+            </Button>
+            <Button color="primary" onPress={() => onOpenChange()}>
+              Fertig
+            </Button>
+          </>
+        }
+      >
+        <div className="flex flex-col gap-6 justify-center items-center">
+          <p className="text-xl">{currentQuestion.description}</p>
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-3xl font-bold text-primary">{fromLocation}</p>
+            <p className="text-2xl">↓</p>
+            <p className="text-3xl font-bold text-primary">{toLocation}</p>
+          </div>
+          {showAnswer && (
+            <p className="text-4xl font-bold mt-4">{currentQuestion.answer}</p>
+          )}
+        </div>
+      </BaseModal>
+    );
+  }
+
+  // Sprache Raten challenge: play audio, guess language
+  if (isSpracheRaten && currentQuestion) {
+    const sentence = currentQuestion.lines[0];
+    const languageCode = currentQuestion.lines[1];
+    return (
+      <BaseModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        title="Sprache Raten"
+        size="3xl"
+        modalRef={targetRef}
+        headerProps={moveProps}
+        footer={
+          <>
+            {!showAnswer && (
+              <Button onPress={() => setShowAnswer(true)}>
+                Sprache zeigen
+              </Button>
+            )}
+            <Button color="secondary" onPress={handleAnotherChallenge}>
+              Anderer Satz
+            </Button>
+            <Button color="primary" onPress={() => onOpenChange()}>
+              Fertig
+            </Button>
+          </>
+        }
+      >
+        <div className="flex flex-col gap-8 justify-center items-center py-8">
+          <p className="text-xl">{currentQuestion.description}</p>
+          <div className="flex flex-col items-center gap-4">
+            <Button
+              size="lg"
+              color="primary"
+              isIconOnly
+              isLoading={isLoadingAudio}
+              onPress={() => playAudio(sentence, languageCode)}
+              className="h-20 w-20 min-w-0 rounded-full"
+            >
+              {!isLoadingAudio && <SpeakerWaveIcon className="h-10 w-10" />}
+            </Button>
+            <p className="text-lg text-default-500">
+              {isPlayingAudio ? "Spielt ab..." : "Klicken zum Abspielen"}
+            </p>
+          </div>
+          {showAnswer && (
+            <p className="text-3xl font-bold text-primary mt-4">
+              {currentQuestion.answer}
+            </p>
+          )}
+        </div>
+      </BaseModal>
+    );
+  }
+
+  // Regular challenge step: show the question (fallback, shouldn't be reached now)
   if (!currentQuestion || !currentImage) return null;
 
   return (
