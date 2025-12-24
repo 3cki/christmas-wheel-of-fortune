@@ -47,6 +47,13 @@ export default function QuestionModal({
   const [randomLetter, setRandomLetter] = useState<string>("");
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isLoadingTranslation, setIsLoadingTranslation] = useState(false);
+  const [translationData, setTranslationData] = useState<{
+    sentence: string;
+    languageCode: string;
+    answer: string;
+    langKey: string;
+  } | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const {
     currentQuestion,
@@ -61,6 +68,24 @@ export default function QuestionModal({
   const isSpracheRaten = questionType === "sprache_raten";
   const isInstructionOnly =
     questionType && INSTRUCTION_ONLY_CATEGORIES.includes(questionType);
+
+  // Fetch random translation
+  const fetchRandomTranslation = useCallback(async (excludeLang?: string) => {
+    setIsLoadingTranslation(true);
+    try {
+      const url = excludeLang
+        ? `/api/translate?exclude=${excludeLang}`
+        : "/api/translate";
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Translation failed");
+      const data = await response.json();
+      setTranslationData(data);
+    } catch (error) {
+      console.error("Failed to fetch translation:", error);
+    } finally {
+      setIsLoadingTranslation(false);
+    }
+  }, []);
 
   // Play TTS audio
   const playAudio = useCallback(async (text: string, languageCode: string) => {
@@ -102,6 +127,7 @@ export default function QuestionModal({
       setShowAnswer(false);
       setRandomLetter("");
       setIsPlayingAudio(false);
+      setTranslationData(null);
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -113,6 +139,8 @@ export default function QuestionModal({
     if (questionType) {
       if (isStadtLandFluss) {
         setRandomLetter(getRandomLetter());
+      } else if (isSpracheRaten) {
+        fetchRandomTranslation();
       } else if (!isInstructionOnly) {
         selectRandomQuestion(questionType);
       }
@@ -125,6 +153,8 @@ export default function QuestionModal({
     if (questionType) {
       if (isStadtLandFluss) {
         setRandomLetter(getRandomLetter(randomLetter));
+      } else if (isSpracheRaten) {
+        fetchRandomTranslation(translationData?.langKey);
       } else {
         selectRandomQuestion(questionType);
       }
@@ -335,9 +365,7 @@ export default function QuestionModal({
   }
 
   // Sprache Raten challenge: play audio, guess language
-  if (isSpracheRaten && currentQuestion) {
-    const sentence = currentQuestion.lines[0];
-    const languageCode = currentQuestion.lines[1];
+  if (isSpracheRaten && step === "challenge") {
     return (
       <BaseModal
         isOpen={isOpen}
@@ -348,13 +376,17 @@ export default function QuestionModal({
         headerProps={moveProps}
         footer={
           <>
-            {!showAnswer && (
+            {!showAnswer && translationData && (
               <Button onPress={() => setShowAnswer(true)}>
                 Sprache zeigen
               </Button>
             )}
-            <Button color="secondary" onPress={handleAnotherChallenge}>
-              Anderer Satz
+            <Button
+              color="secondary"
+              onPress={handleAnotherChallenge}
+              isDisabled={isLoadingTranslation}
+            >
+              Andere Sprache
             </Button>
             <Button color="primary" onPress={() => onOpenChange()}>
               Fertig
@@ -363,25 +395,36 @@ export default function QuestionModal({
         }
       >
         <div className="flex flex-col gap-8 justify-center items-center py-8">
-          <p className="text-xl">{currentQuestion.description}</p>
-          <div className="flex flex-col items-center gap-4">
-            <Button
-              size="lg"
-              color="primary"
-              isIconOnly
-              isLoading={isLoadingAudio}
-              onPress={() => playAudio(sentence, languageCode)}
-              className="h-20 w-20 min-w-0 rounded-full"
-            >
-              {!isLoadingAudio && <SpeakerWaveIcon className="h-10 w-10" />}
-            </Button>
-            <p className="text-lg text-default-500">
-              {isPlayingAudio ? "Spielt ab..." : "Klicken zum Abspielen"}
-            </p>
-          </div>
-          {showAnswer && (
+          <p className="text-xl">Welche Sprache ist das?</p>
+          {isLoadingTranslation ? (
+            <div className="flex flex-col items-center gap-4">
+              <div className="h-20 w-20 rounded-full bg-default-200 animate-pulse" />
+              <p className="text-lg text-default-500">Übersetze...</p>
+            </div>
+          ) : translationData ? (
+            <div className="flex flex-col items-center gap-4">
+              <Button
+                size="lg"
+                color="primary"
+                isIconOnly
+                isLoading={isLoadingAudio}
+                onPress={() =>
+                  playAudio(translationData.sentence, translationData.languageCode)
+                }
+                className="h-20 w-20 min-w-0 rounded-full"
+              >
+                {!isLoadingAudio && <SpeakerWaveIcon className="h-10 w-10" />}
+              </Button>
+              <p className="text-lg text-default-500">
+                {isPlayingAudio ? "Spielt ab..." : "Klicken zum Abspielen"}
+              </p>
+            </div>
+          ) : (
+            <p className="text-lg text-danger">Fehler beim Laden</p>
+          )}
+          {showAnswer && translationData && (
             <p className="text-3xl font-bold text-primary mt-4">
-              {currentQuestion.answer}
+              {translationData.answer}
             </p>
           )}
         </div>
