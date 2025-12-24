@@ -22,3 +22,11 @@ export const COLORS = {
   lieder: "#1683b0", // Blue
   schaetzen: "#c57e4d", // Orange/Brown
 } as const;
+
+// Game type labels for display
+export const GAME_TYPE_LABELS: Record<GameType, string> = {
+  gedicht: "Vervollständige",
+  wahr_falsch: "Wahr / Falsch",
+  lieder: "Lieder trällern",
+  schaetzen: "Schätzen",
+};

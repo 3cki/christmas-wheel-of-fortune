@@ -48,9 +48,14 @@ export function useQuestionSelection() {
     return QUESTION_TYPE_CONFIG[questionType]?.image ?? null;
   }, []);
 
+  const getDescriptionForType = useCallback((questionType: GameType) => {
+    return QUESTION_TYPE_CONFIG[questionType]?.description ?? null;
+  }, []);
+
   return {
     currentQuestion,
     selectRandomQuestion,
     getImageForType,
+    getDescriptionForType,
   };
 }
