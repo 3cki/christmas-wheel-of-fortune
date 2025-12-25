@@ -17,15 +17,15 @@ function WheelSlice({
   index: number;
   totalSlices: number;
 }) {
-  const rotation = index * (360 / totalSlices);
   const sliceAngle = 360 / totalSlices;
+  const rotation = index * sliceAngle;
 
-  // Calculate clip-path polygon based on slice angle
-  // The polygon creates a wedge from center (50%, 50%) to the left edge
-  // For a slice of `sliceAngle` degrees, calculate the y-offset
-  const angleRad = (sliceAngle * Math.PI) / 180;
-  const yOffset = 50 * Math.tan(angleRad);
-  const topY = Math.max(50 - yOffset - 2, -5); // -2 for overlap, min -5%
+  // Calculate clip-path polygon for a wedge
+  // Using half the slice angle to calculate the y-offset from center
+  const halfAngleRad = ((sliceAngle / 2) * Math.PI) / 180;
+  const yOffset = 50 * Math.tan(halfAngleRad);
+  const topY = 50 - yOffset - 1; // small overlap to avoid gaps
+  const bottomY = 50 + yOffset + 1;
 
   return (
     <div className="text-xl font-bold tracking-wide">
@@ -34,11 +34,10 @@ function WheelSlice({
         className={styles.sector}
         style={{
           zIndex: -1,
-          transform: `rotate(${rotation}deg)`,
-          clipPath: `polygon(0% ${topY}%, 50% 50%, 0% 52%)`,
+          transform: `rotate(${rotation + 90}deg)`,
+          clipPath: `polygon(0% ${topY}%, 50% 50%, 0% ${bottomY}%)`,
           borderRadius: "50%",
           backgroundColor: slice.color,
-          rotate: `${90 + 180 / totalSlices}deg`,
         }}
       />
       {/* Label */}
@@ -46,7 +45,6 @@ function WheelSlice({
         className={styles.sector}
         style={{
           transform: `rotate(${rotation}deg)`,
-          rotate: "0.75deg",
         }}
       >
         <p className={styles.bonusSector}>{slice.label}</p>

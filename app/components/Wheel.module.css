@@ -64,12 +64,14 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  left: -47.5%;
-  top: 2%;
-  transform: rotate(90deg);
+  left: -46%;
+  top: 0;
+  transform: rotate(90deg) translateX(-1em);
+  transform-origin: center center;
   text-align: start;
   font-size: 1em;
   line-height: 2;
+  padding-left: 1.5em;
 }
 
 .sector {
@@ -96,9 +98,6 @@
   .container {
     font-size: 20px;
   }
-  .bonusSector {
-    left: -46.5%;
-  }
 
   .wheel {
     max-width: 45rem;
@@ -124,9 +123,5 @@
 
   .arrow {
     height: 1.25rem;
-  }
-
-  .bonusSector {
-    left: -47.5%;
   }
 }
